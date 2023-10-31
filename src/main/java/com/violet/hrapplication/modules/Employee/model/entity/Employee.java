@@ -1,29 +1,47 @@
-package com.violet.hrapplication.model.entity;
+package com.violet.hrapplication.modules.Employee.model.entity;
 
-import com.violet.hrapplication.model.enums.Gender;
-import com.violet.hrapplication.model.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.violet.hrapplication.annotations.Column;
+import com.violet.hrapplication.annotations.Table;
+import com.violet.hrapplication.modules.Employee.model.enums.Gender;
+import com.violet.hrapplication.modules.Employee.model.enums.Role;
 
 import java.time.LocalDate;
 
-@Entity
+@Table(table = "employee")
 public class Employee {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(column = "id")
     private Long id;
+
+    @Column(column = "username")
     private String username;
+
+    @Column(column = "password")
     private String password;
+
+    @Column(column = "first_name")
     private String firstName;
+
+    @Column(column = "last_name")
     private String lastName;
+
+    @Column(column = "email")
     private String email;
+
+    @Column(column = "birthday")
     private LocalDate birthday;
+
+    @Column(column = "start_working_date")
     private LocalDate startWorkingDate;
+
+    @Column(column = "role")
     private Role role;
+
+    @Column(column = "gender")
     private Gender gender;
+
+    public Employee() {
+    }
 
     public Long getId() {
         return id;

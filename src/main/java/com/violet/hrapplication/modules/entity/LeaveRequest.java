@@ -1,25 +1,18 @@
-package com.violet.hrapplication.model.entity;
+package com.violet.hrapplication.modules.entity;
 
-import jakarta.persistence.*;
+import com.violet.hrapplication.modules.Employee.model.entity.Employee;
 
 import java.time.LocalDate;
 
-@Entity
 public class LeaveRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
     private Employee employee;
 
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToOne
-    @JoinColumn(name = "leaveType_id")
     private LeaveType leaveType;
 
     private boolean approved; // doğrudan onaylanmış olduğu için true dönmeli
