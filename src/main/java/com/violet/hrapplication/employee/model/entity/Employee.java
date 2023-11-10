@@ -1,9 +1,9 @@
-package com.violet.hrapplication.modules.Employee.model.entity;
+package com.violet.hrapplication.employee.model.entity;
 
 import com.violet.hrapplication.annotations.Column;
 import com.violet.hrapplication.annotations.Table;
-import com.violet.hrapplication.modules.Employee.model.enums.Gender;
-import com.violet.hrapplication.modules.Employee.model.enums.Role;
+import com.violet.hrapplication.employee.model.enums.Gender;
+import com.violet.hrapplication.employee.model.enums.Role;
 
 import java.time.LocalDate;
 
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class Employee {
 
     @Column(column = "id")
-    private Long id;
+    private String id;
 
     @Column(column = "username")
     private String username;
@@ -20,10 +20,10 @@ public class Employee {
     private String password;
 
     @Column(column = "first_name")
-    private String firstName;
+    private String first_name;
 
     @Column(column = "last_name")
-    private String lastName;
+    private String last_name;
 
     @Column(column = "email")
     private String email;
@@ -32,7 +32,7 @@ public class Employee {
     private LocalDate birthday;
 
     @Column(column = "start_working_date")
-    private LocalDate startWorkingDate;
+    private LocalDate start_working_date;
 
     @Column(column = "role")
     private Role role;
@@ -40,14 +40,24 @@ public class Employee {
     @Column(column = "gender")
     private Gender gender;
 
-    public Employee() {
+    public Employee(String id, String username, String password, String first_name, String last_name, String email, LocalDate birthday, LocalDate start_working_date, Role role, Gender gender) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+        this.birthday = birthday;
+        this.start_working_date = start_working_date;
+        this.role = role;
+        this.gender = gender;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -68,19 +78,19 @@ public class Employee {
     }
 
     public String getFirstName() {
-        return firstName;
+        return first_name;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.first_name = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return last_name;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.last_name = lastName;
     }
 
     public String getEmail() {
@@ -100,11 +110,11 @@ public class Employee {
     }
 
     public LocalDate getStartWorkingDate() {
-        return startWorkingDate;
+        return start_working_date;
     }
 
     public void setStartWorkingDate(LocalDate startWorkingDate) {
-        this.startWorkingDate = startWorkingDate;
+        this.start_working_date = startWorkingDate;
     }
 
     public Role getRole() {
@@ -121,5 +131,21 @@ public class Employee {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", email='" + email + '\'' +
+                ", birthday=" + birthday +
+                ", start_working_date=" + start_working_date +
+                ", role=" + role +
+                ", gender=" + gender +
+                '}';
     }
 }

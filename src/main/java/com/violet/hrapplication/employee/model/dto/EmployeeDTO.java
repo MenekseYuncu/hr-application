@@ -1,27 +1,44 @@
-package com.violet.hrapplication.model.dto;
+package com.violet.hrapplication.employee.model.dto;
 
-import com.violet.hrapplication.model.enums.Gender;
-import com.violet.hrapplication.model.enums.Role;
+import com.violet.hrapplication.employee.model.entity.Employee;
+import com.violet.hrapplication.employee.model.enums.Gender;
+import com.violet.hrapplication.employee.model.enums.Role;
 
 import java.time.LocalDate;
 
 public class EmployeeDTO {
 
-    private Long id;
+    private String id;
     private String username;
+    private String password;
     private String firstName;
     private String lastName;
     private String email;
-    private LocalDate birthDate;
+    private LocalDate birthday;
     private LocalDate startWorkingDate;
     private Role role;
     private Gender gender;
 
-    public Long getId() {
+    public Employee toEmployee() {
+        return new Employee(
+                id,
+                username,
+                password,
+                firstName,
+                lastName,
+                email,
+                birthday,
+                startWorkingDate,
+                role,
+                gender
+        );
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -31,6 +48,14 @@ public class EmployeeDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -57,12 +82,12 @@ public class EmployeeDTO {
         this.email = email;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public LocalDate getBirthday() {
+        return birthday;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     public LocalDate getStartWorkingDate() {
@@ -88,4 +113,5 @@ public class EmployeeDTO {
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+
 }

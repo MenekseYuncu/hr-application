@@ -23,7 +23,7 @@ public class DatabaseConnect {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl(this.dbUrl);
         dataSource.setUsername(this.username);
         dataSource.setPassword(this.password);

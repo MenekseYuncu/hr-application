@@ -1,20 +1,13 @@
-package com.violet.hrapplication.model.entity;
+package com.violet.hrapplication.modules.entity;
 
-import jakarta.persistence.*;
+import com.violet.hrapplication.employee.model.entity.Employee;
 
-@Entity
 public class EmployeeLeaveTypeAssigment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @ManyToOne
-    @JoinColumn(name = "leaveType_id")
     private LeaveType leaveType;
 
     public Long getId() {

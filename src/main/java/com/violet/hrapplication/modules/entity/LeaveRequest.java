@@ -1,6 +1,6 @@
 package com.violet.hrapplication.modules.entity;
 
-import com.violet.hrapplication.modules.Employee.model.entity.Employee;
+import com.violet.hrapplication.employee.model.entity.Employee;
 
 import java.time.LocalDate;
 
