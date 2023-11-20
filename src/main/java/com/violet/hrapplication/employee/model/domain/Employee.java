@@ -1,12 +1,13 @@
-package com.violet.hrapplication.employee.model.dto;
+package com.violet.hrapplication.employee.model.domain;
 
-import com.violet.hrapplication.employee.model.entity.Employee;
+import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.model.enums.Gender;
 import com.violet.hrapplication.employee.model.enums.Role;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class EmployeeDTO {
+public class Employee {
 
     private String id;
     private String username;
@@ -18,9 +19,11 @@ public class EmployeeDTO {
     private LocalDate startWorkingDate;
     private Role role;
     private Gender gender;
+    private String creator;
+    private LocalDateTime creationTime;
 
-    public Employee toEmployee() {
-        return new Employee(
+    public EmployeeEntity toEmployee() {
+        return new EmployeeEntity(
                 id,
                 username,
                 password,
@@ -30,7 +33,9 @@ public class EmployeeDTO {
                 birthday,
                 startWorkingDate,
                 role,
-                gender
+                gender,
+                creator,
+                creationTime
         );
     }
 
@@ -114,4 +119,19 @@ public class EmployeeDTO {
         this.gender = gender;
     }
 
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
 }

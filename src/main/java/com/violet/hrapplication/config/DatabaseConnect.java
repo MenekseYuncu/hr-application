@@ -9,7 +9,7 @@ import org.sql2o.Sql2o;
 import javax.sql.DataSource;
 
 @Configuration
-public class DatabaseConnect {
+class DatabaseConnect {
 
     @Value("${db.url}")
     private String dbUrl;

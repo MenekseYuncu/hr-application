@@ -1,10 +1,10 @@
 package com.violet.hrapplication.employee.service;
 
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
-import com.violet.hrapplication.employee.model.dto.EmployeeDTO;
+import com.violet.hrapplication.employee.model.domain.Employee;
 
 public interface EmployeeService {
 
-    EmployeeDTO createEmployee(CreateEmployeeRequest request);
-
+    Employee create(CreateEmployeeRequest request);
+    
 }

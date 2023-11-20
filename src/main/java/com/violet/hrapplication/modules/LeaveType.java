@@ -1,4 +1,4 @@
-package com.violet.hrapplication.modules.entity;
+package com.violet.hrapplication.modules;
 
 import com.violet.hrapplication.employee.model.enums.Gender;
 

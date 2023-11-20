@@ -1,56 +1,39 @@
 package com.violet.hrapplication.employee.model.entity;
 
-import com.violet.hrapplication.annotations.Column;
-import com.violet.hrapplication.annotations.Table;
 import com.violet.hrapplication.employee.model.enums.Gender;
 import com.violet.hrapplication.employee.model.enums.Role;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Table(table = "employee")
-public class Employee {
+public class EmployeeEntity {
 
-    @Column(column = "id")
     private String id;
-
-    @Column(column = "username")
     private String username;
-
-    @Column(column = "password")
     private String password;
-
-    @Column(column = "first_name")
-    private String first_name;
-
-    @Column(column = "last_name")
-    private String last_name;
-
-    @Column(column = "email")
+    private String firstName;
+    private String lastName;
     private String email;
-
-    @Column(column = "birthday")
     private LocalDate birthday;
-
-    @Column(column = "start_working_date")
-    private LocalDate start_working_date;
-
-    @Column(column = "role")
+    private LocalDate startWorkingDate;
     private Role role;
-
-    @Column(column = "gender")
     private Gender gender;
+    private String creator;
+    private LocalDateTime creationTime;
 
-    public Employee(String id, String username, String password, String first_name, String last_name, String email, LocalDate birthday, LocalDate start_working_date, Role role, Gender gender) {
+    public EmployeeEntity(String id, String username, String password, String firstName, String lastName, String email, LocalDate birthday, LocalDate startWorkingDate, Role role, Gender gender, String creator, LocalDateTime creationTime) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.birthday = birthday;
-        this.start_working_date = start_working_date;
+        this.startWorkingDate = startWorkingDate;
         this.role = role;
         this.gender = gender;
+        this.creator = creator;
+        this.creationTime = creationTime;
     }
 
     public String getId() {
@@ -78,19 +61,19 @@ public class Employee {
     }
 
     public String getFirstName() {
-        return first_name;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        this.first_name = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return last_name;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        this.last_name = lastName;
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -110,11 +93,11 @@ public class Employee {
     }
 
     public LocalDate getStartWorkingDate() {
-        return start_working_date;
+        return startWorkingDate;
     }
 
     public void setStartWorkingDate(LocalDate startWorkingDate) {
-        this.start_working_date = startWorkingDate;
+        this.startWorkingDate = startWorkingDate;
     }
 
     public Role getRole() {
@@ -133,19 +116,20 @@ public class Employee {
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", email='" + email + '\'' +
-                ", birthday=" + birthday +
-                ", start_working_date=" + start_working_date +
-                ", role=" + role +
-                ", gender=" + gender +
-                '}';
+    public String getCreator() {
+        return creator;
     }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
 }

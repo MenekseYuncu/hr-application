@@ -1,11 +1,11 @@
 package com.violet.hrapplication.employee.repository;
 
-import com.violet.hrapplication.employee.model.entity.Employee;
+import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 
 public interface EmployeeRepository {
 
-    void createEmployee(Employee employee);
+    void save(EmployeeEntity employeeEntity);
 
-    Boolean isUsernameExists(String username);
+    Boolean findByUsername(String username);
 
 }

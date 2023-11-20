@@ -1,12 +1,12 @@
-package com.violet.hrapplication.modules.entity;
+package com.violet.hrapplication.modules;
 
-import com.violet.hrapplication.employee.model.entity.Employee;
+import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 
 public class EmployeeLeaveTypeAssigment {
 
     private Long id;
 
-    private Employee employee;
+    private EmployeeEntity employeeEntity;
 
     private LeaveType leaveType;
 
@@ -18,12 +18,12 @@ public class EmployeeLeaveTypeAssigment {
         this.id = id;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public EmployeeEntity getEmployee() {
+        return employeeEntity;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployee(EmployeeEntity employeeEntity) {
+        this.employeeEntity = employeeEntity;
     }
 
     public LeaveType getLeaveType() {

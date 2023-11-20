@@ -1,4 +1,4 @@
-package com.violet.hrapplication.employee.exception;
+package com.violet.hrapplication.exception;
 
 public class UserNameAlreadyExists extends RuntimeException {
 

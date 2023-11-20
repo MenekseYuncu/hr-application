@@ -1,8 +1,7 @@
 package com.violet.hrapplication.employee.controller;
 
-import com.violet.hrapplication.employee.controller.endpoints.EmployeControllerEndpoint;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
-import com.violet.hrapplication.employee.model.dto.EmployeeDTO;
+import com.violet.hrapplication.employee.model.domain.Employee;
 import com.violet.hrapplication.employee.service.EmployeeService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(EmployeControllerEndpoint.EMPLOYEE)
-public class EmployeeController {
+@RequestMapping("/api")
+class EmployeeController {
 
     private final EmployeeService employeeService;
 
@@ -20,9 +19,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee")
-    public EmployeeDTO createEmployee(
+    public void createEmployee(
             @RequestBody CreateEmployeeRequest request
     ) {
-        return employeeService.createEmployee(request);
+          employeeService.create(request);
     }
 }

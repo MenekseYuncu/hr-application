@@ -1,16 +1,14 @@
 package com.violet.hrapplication.employee.repository.impl;
 
-import com.violet.hrapplication.employee.model.entity.Employee;
+import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
-import java.util.List;
-
 @Repository
-public class EmployeeRepositoryImpl implements EmployeeRepository {
+class EmployeeRepositoryImpl implements EmployeeRepository {
 
     private final Sql2o sql2o;
 
@@ -19,38 +17,47 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
     }
 
     @Override
-    public void createEmployee(Employee employee) {
-        var sql = "INSERT INTO Employee (" +
-                "id, username, password, first_name, last_name, email, birthday, start_working_date, Role, Gender) " +
+    public void save(EmployeeEntity employeeEntity) {
+        final String sql = "INSERT INTO EMPLOYEE (" +
+                "ID, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, BIRTHDAY, START_WORKING_DATE,ROLE ,GENDER,CREATOR,CREATION_TIME) " +
                 "VALUES (" +
-                ":id, :username, :password, :first_name, :last_name, :email, :birthday, :start_working_date, :role, :gender)";
+                ":id, :username, :password, :firstName, :lastName, :email, :birthday, :startWorkingDate, :role, :gender, :creator, :creationTime)";
 
-        try (Connection con = sql2o.open()) {
-            try (Query query = con.createQuery(sql)
-                    .addParameter("id", employee.getId())
-                    .addParameter("username", employee.getUsername())
-                    .addParameter("password", employee.getPassword())
-                    .addParameter("first_name", employee.getFirstName())
-                    .addParameter("last_name", employee.getLastName())
-                    .addParameter("email", employee.getEmail())
-                    .addParameter("birthday", employee.getBirthday())
-                    .addParameter("start_working_date", employee.getStartWorkingDate())
-                    .addParameter("role", employee.getRole())
-                    .addParameter("gender", employee.getGender())) {
-                query.executeUpdate();
-            }
+        try (Connection con = sql2o.open();
+             Query query = con.createQuery(sql)
+                     .addParameter("id", employeeEntity.getId())
+                     .addParameter("username", employeeEntity.getUsername())
+                     .addParameter("password", employeeEntity.getPassword())
+                     .addParameter("firstName", employeeEntity.getFirstName())
+                     .addParameter("lastName", employeeEntity.getLastName())
+                     .addParameter("email", employeeEntity.getEmail())
+                     .addParameter("birthday", employeeEntity.getBirthday())
+                     .addParameter("startWorkingDate", employeeEntity.getStartWorkingDate())
+                     .addParameter("role", employeeEntity.getRole())
+                     .addParameter("gender", employeeEntity.getGender())
+                     .addParameter("creator", employeeEntity.getCreator())
+                     .addParameter("creationTime", employeeEntity.getCreationTime())) {
+            query.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public Boolean isUsernameExists(String username) {
-        String sql = "SELECT * FROM Employee WHERE username = :username";
-        try (Connection con = sql2o.open()) {
-            try (Query query = con.createQuery(sql)) {
-                query.addParameter("username", username);
-                List<Employee> employees = query.executeAndFetch(Employee.class);
-                return !employees.isEmpty();
-            }
+    public Boolean findByUsername(String username) {
+        final String checkUsernameSql = "SELECT COUNT(*) FROM EMPLOYEE WHERE USERNAME = :username";
+
+        try (Connection con = sql2o.open();
+             Query query = con.createQuery(checkUsernameSql)
+                     .addParameter("username", username)) {
+
+            int existingUserCount = query.executeScalar(Integer.class);
+            return existingUserCount == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
+

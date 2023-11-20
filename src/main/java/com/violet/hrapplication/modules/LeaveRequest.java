@@ -1,6 +1,6 @@
-package com.violet.hrapplication.modules.entity;
+package com.violet.hrapplication.modules;
 
-import com.violet.hrapplication.employee.model.entity.Employee;
+import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 
 import java.time.LocalDate;
 
@@ -8,7 +8,7 @@ public class LeaveRequest {
 
     private Long id;
 
-    private Employee employee;
+    private EmployeeEntity employeeEntity;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -25,12 +25,12 @@ public class LeaveRequest {
         this.id = id;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public EmployeeEntity getEmployee() {
+        return employeeEntity;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployee(EmployeeEntity employeeEntity) {
+        this.employeeEntity = employeeEntity;
     }
 
     public LocalDate getStartDate() {
