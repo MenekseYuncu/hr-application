@@ -46,14 +46,48 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public Boolean findByUsername(String username) {
-        final String checkUsernameSql = "SELECT COUNT(*) FROM EMPLOYEE WHERE USERNAME = :username";
+        final String checkUsername = "SELECT COUNT(*) FROM EMPLOYEE WHERE USERNAME = :username";
 
         try (Connection con = sql2o.open();
-             Query query = con.createQuery(checkUsernameSql)
+             Query query = con.createQuery(checkUsername)
                      .addParameter("username", username)) {
 
             int existingUserCount = query.executeScalar(Integer.class);
             return existingUserCount == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean checkPassword(String username, String password) {
+        final String checkPasswordSql = "SELECT COUNT(*) FROM EMPLOYEE WHERE USERNAME = :username AND PASSWORD = :password";
+
+        try (Connection con = sql2o.open();
+             Query query = con.createQuery(checkPasswordSql)
+                     .addParameter("username", username)
+                     .addParameter("password", password)) {
+
+            int matchingUserCount = query.executeScalar(Integer.class);
+            return matchingUserCount > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean changePassword(String username, String newPassword) {
+        final String changePasswordSql = "UPDATE EMPLOYEE SET PASSWORD = :newPassword WHERE USERNAME = :username";
+
+        try (Connection con = sql2o.open();
+             Query query = con.createQuery(changePasswordSql)
+                     .addParameter("newPassword", newPassword)
+                     .addParameter("username", username)) {
+
+            query.executeUpdate();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

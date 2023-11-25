@@ -17,10 +17,15 @@ class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(LoginRequest loginRequest) throws AuthenticationException {
-        return null;
-    }
+        String username = loginRequest.username();
+        String password = loginRequest.password();
 
-    public boolean authenticateUser(String username, String password) {
-        return authRepository.authenticateUser(username, password);
+        boolean isAuthenticated = authRepository.authenticateUser(username, password);
+
+        if (isAuthenticated) {
+            return "Login successful";
+        } else {
+            throw new AuthenticationException("Invalid username or password");
+        }
     }
 }

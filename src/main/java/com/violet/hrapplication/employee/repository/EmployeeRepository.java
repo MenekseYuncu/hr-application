@@ -8,4 +8,8 @@ public interface EmployeeRepository {
 
     Boolean findByUsername(String username);
 
+    Boolean checkPassword(String username, String password);
+
+    Boolean changePassword(String username, String newPassword);
+
 }

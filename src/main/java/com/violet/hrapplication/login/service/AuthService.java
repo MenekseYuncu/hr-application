@@ -7,5 +7,4 @@ public interface AuthService {
 
     String login(LoginRequest loginRequest) throws AuthenticationException;
 
-    boolean authenticateUser(String username, String password) throws AuthenticationException;
 }

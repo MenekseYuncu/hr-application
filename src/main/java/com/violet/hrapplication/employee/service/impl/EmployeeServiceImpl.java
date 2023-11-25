@@ -1,10 +1,11 @@
 package com.violet.hrapplication.employee.service.impl;
 
+import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
-import com.violet.hrapplication.exception.UserNameAlreadyExists;
 import com.violet.hrapplication.employee.model.domain.Employee;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import com.violet.hrapplication.employee.service.EmployeeService;
+import com.violet.hrapplication.exception.UserNameAlreadyExists;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee create(CreateEmployeeRequest request) {
+    public void create(CreateEmployeeRequest request) {
 
         Employee employee = new Employee();
         employee.setId(UUID.randomUUID().toString());
@@ -42,11 +43,10 @@ class EmployeeServiceImpl implements EmployeeService {
 
         isUsernameUniqueExists(employee);
         employeeRepository.save(employee.toEmployee());
-        return employee;
     }
 
     private void isUsernameUniqueExists(Employee employee) {
-        var isExists = employeeRepository.findByUsername(employee.getUsername());
+        Boolean isExists = employeeRepository.findByUsername(employee.getUsername());
         int i = 0;
         while (i < 3) {
             if (Boolean.TRUE.equals(isExists)) {
@@ -70,5 +70,22 @@ class EmployeeServiceImpl implements EmployeeService {
     private String generatePassword() {
         int passwordNumber = (int) Math.pow(10, 8) + this.random.nextInt((int) (Math.pow(10, 8) * 9));
         return Integer.toHexString(passwordNumber);
+    }
+
+    @Override
+    public Boolean changePassword(ChangePasswordRequest request) {
+        try {
+            if (Boolean.TRUE.equals(employeeRepository.findByUsername(request.username()))) {
+                return false;
+            }
+
+            if (!Boolean.TRUE.equals(employeeRepository.checkPassword(request.username(), request.oldPassword()))) {
+                return false;
+            }
+            return employeeRepository.changePassword(request.username(), request.newPassword());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

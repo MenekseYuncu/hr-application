@@ -1,6 +1,5 @@
 package com.violet.hrapplication.login;
 
-
 import com.violet.hrapplication.exception.AuthenticationException;
 import com.violet.hrapplication.login.request.LoginRequest;
 import com.violet.hrapplication.login.service.AuthService;
@@ -21,12 +20,6 @@ class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) throws AuthenticationException {
-        boolean isAuthenticated = authService.authenticateUser(request.username(), request.password());
-
-       if (isAuthenticated) {
         return authService.login(request);
-       }
-       return "Invalid username or password";
     }
-
 }
