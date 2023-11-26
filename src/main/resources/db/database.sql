@@ -18,7 +18,7 @@ CREATE TABLE EMPLOYEE
     `ROLE`               ENUM ('MANAGER', 'EMPLOYEE') NOT NULL,
     `GENDER`             ENUM ('MALE', 'FEMALE')      NOT NULL,
     `CREATOR`            VARCHAR(50)                  NOT NULL,
-    `CREATION_TIME`      DATETIME                         NOT NULL
+    `CREATION_TIME`      DATETIME                     NOT NULL
 );
 
 INSERT INTO EMPLOYEE
@@ -37,7 +37,7 @@ VALUES (UUID(),
 
 CREATE TABLE LEAVE_TYPE
 (
-    `ID`            BIGINT      NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `ID`            VARCHAR(36) NOT NULL PRIMARY KEY,
     `NAME`          VARCHAR(50) NOT NULL,
     `MAX_DAYS`      INT,
     `GENDER`        ENUM ('MALE', 'FEMALE'),
@@ -45,6 +45,21 @@ CREATE TABLE LEAVE_TYPE
     `CREATION_TIME` DATETIME    NOT NULL
 );
 
+INSERT INTO LEAVE_TYPE
+VALUES (UUID(),
+        'Annual Leave',
+        12,
+        'MALE',
+        'violet',
+        NOW());
 
-
-
+CREATE TABLE LEAVE_REQUEST
+(
+    `ID`            VARCHAR(36) NOT NULL PRIMARY KEY,
+    `EMPLOYEE_ID`   VARCHAR(36) NOT NULL,
+    `START_DATE`    DATE        NOT NULL,
+    `END_DATE`      DATE        NOT NULL,
+    `LEAVE_TYPE_ID` VARCHAR(36) NOT NULL,
+    `STATE`         ENUM ('PENDING', 'APPROVED', 'REJECTED'),
+    `CREATOR`       VARCHAR(50) NOT NULL,
+);
