@@ -2,14 +2,19 @@ package com.violet.hrapplication.employee.service.impl;
 
 import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
+import com.violet.hrapplication.employee.controller.request.UpdateEmployeeRequest;
 import com.violet.hrapplication.employee.model.domain.Employee;
+import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import com.violet.hrapplication.employee.service.EmployeeService;
+import com.violet.hrapplication.exception.AuthenticationException;
 import com.violet.hrapplication.exception.UserNameAlreadyExists;
+import com.violet.hrapplication.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -17,7 +22,7 @@ import java.util.UUID;
 class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final Random random = new Random();
+    private static final Random random = new Random();
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -42,50 +47,77 @@ class EmployeeServiceImpl implements EmployeeService {
         employee.setPassword(generatePassword());
 
         isUsernameUniqueExists(employee);
+
+
         employeeRepository.save(employee.toEmployee());
     }
 
     private void isUsernameUniqueExists(Employee employee) {
-        Boolean isExists = employeeRepository.findByUsername(employee.getUsername());
-        int i = 0;
-        while (i < 3) {
-            if (Boolean.TRUE.equals(isExists)) {
-                employee.setUsername(generateUsername(employee));
-                isExists = employeeRepository.findByUsername(employee.getUsername());
-            } else {
-                break;
+        for (int attempt = 0; attempt < 3; attempt++) {
+            Optional<EmployeeEntity> existingEmployee = employeeRepository.findByUsername(employee.getUsername());
+
+            if (existingEmployee.isEmpty()) {
+                return;
             }
-            i++;
+            employee.setUsername(generateUsername(employee));
         }
-        if (Boolean.FALSE.equals(isExists)) {
-            throw new UserNameAlreadyExists();
-        }
+        throw new UserNameAlreadyExists();
     }
 
+
     private String generateUsername(Employee employee) {
-        int uniques = 1000 + this.random.nextInt(9000);
+        int uniques = 1000 + EmployeeServiceImpl.random.nextInt(9000);
         return employee.getFirstName().toLowerCase() + "-" + employee.getLastName().toLowerCase() + "-" + uniques;
     }
 
     private String generatePassword() {
-        int passwordNumber = (int) Math.pow(10, 8) + this.random.nextInt((int) (Math.pow(10, 8) * 9));
+        int passwordNumber = (int) Math.pow(10, 8) + EmployeeServiceImpl.random.nextInt((int) (Math.pow(10, 8) * 9));
         return Integer.toHexString(passwordNumber);
     }
 
     @Override
-    public Boolean changePassword(ChangePasswordRequest request) {
-        try {
-            if (Boolean.TRUE.equals(employeeRepository.findByUsername(request.username()))) {
-                return false;
-            }
+    public void update(UpdateEmployeeRequest request, String id) {
 
-            if (!Boolean.TRUE.equals(employeeRepository.checkPassword(request.username(), request.oldPassword()))) {
-                return false;
-            }
-            return employeeRepository.changePassword(request.username(), request.newPassword());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        EmployeeEntity existingEmployeeEntity = employeeRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Employee not found"));
+
+        validateUniqueEmail(request.email());
+        validateUniqueUsername(request.username());
+
+        Employee updatedEmployee = new Employee();
+        updatedEmployee.setUsername(request.username());
+        updatedEmployee.setFirstName(request.firstName());
+        updatedEmployee.setLastName(request.lastName());
+        updatedEmployee.setEmail(request.email());
+        updatedEmployee.setGender(request.gender());
+
+        employeeRepository.update(updatedEmployee.toEmployee());
+    }
+
+    private void validateUniqueEmail(String email) {
+        if (employeeRepository.findByEmail(email).isPresent()) {
+            throw new UserNotFoundException("Email already exists");
         }
+    }
+
+    private void validateUniqueUsername(String username) {
+        if (employeeRepository.findByUsername(username).isPresent()) {
+            throw new UserNotFoundException("Username already exists");
+        }
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request) {
+
+        Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(request.id());
+
+        if (employeeEntity.isEmpty()) {
+            throw new AuthenticationException("User not found");
+        }
+        if (!employeeEntity.get().getPassword().equals(request.oldPassword())) {
+            throw new AuthenticationException("Invalid password");
+        }
+        employeeRepository.changePassword(request.id(), request.newPassword());
+
     }
 }

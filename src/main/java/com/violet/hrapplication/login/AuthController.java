@@ -19,7 +19,7 @@ class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) throws AuthenticationException {
-        return authService.login(request);
+    public void login(@RequestBody LoginRequest request) throws AuthenticationException {
+        authService.login(request);
     }
 }

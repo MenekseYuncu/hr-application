@@ -2,14 +2,27 @@ package com.violet.hrapplication.employee.repository;
 
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 public interface EmployeeRepository {
 
     void save(EmployeeEntity employeeEntity);
 
-    Boolean findByUsername(String username);
+    void update(EmployeeEntity employeeEntity);
 
-    Boolean checkPassword(String username, String password);
+    Set<EmployeeEntity> findAll();
 
-    Boolean changePassword(String username, String newPassword);
+    Optional<EmployeeEntity> findByUsername(String username);
 
+    List<String> findAllByUsername(String username);
+
+    Optional<EmployeeEntity> findById(String id);
+
+    Optional<EmployeeEntity> findByEmail(String email);
+
+    void changePassword(String username, String newPassword);
+
+    void authenticateUser(String username, String password);
 }

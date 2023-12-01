@@ -15,18 +15,18 @@ class DatabaseConnect {
     private String dbUrl;
 
     @Value("${db.username}")
-    private String username;
+    private String dbUsername;
 
     @Value("${db.password}")
-    private String password;
+    private String dbPassword;
 
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl(this.dbUrl);
-        dataSource.setUsername(this.username);
-        dataSource.setPassword(this.password);
+        dataSource.setUsername(this.dbUsername);
+        dataSource.setPassword(this.dbPassword);
         return dataSource;
     }
 
