@@ -18,22 +18,19 @@ class LeaveTypeRepositoryImpl implements LeaveTypeRepository {
 
     @Override
     public void save(LeaveTypeEntity leaveTypeEntity) {
-        final String sql = "INSERT INTO LEAVETYPE (" +
-                "ID, NAME, MAX_DAYS, GENDER, CREATOR, CREATION_TIME) " +
+        final String sql = "INSERT INTO LEAVE_TYPE (" +
+                "ID, NAME, MAX_DAYS, CREATOR, CREATION_TIME) " +
                 "VALUES (" +
-                ":id, :name, :maxDays, :gender, :creator, :creationTime)";
+                ":id, :name, :maxDays, :creator, :creationTime)";
 
         try (Connection con = sql2o.open();
              Query query = con.createQuery(sql)
                      .addParameter("id", leaveTypeEntity.getId())
                      .addParameter("name", leaveTypeEntity.getName())
                      .addParameter("maxDays", leaveTypeEntity.getMaxDays())
-                     .addParameter("gender", leaveTypeEntity.getGender())
                      .addParameter("creator", leaveTypeEntity.getCreator())
                      .addParameter("creationTime", leaveTypeEntity.getCreationTime())) {
             query.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

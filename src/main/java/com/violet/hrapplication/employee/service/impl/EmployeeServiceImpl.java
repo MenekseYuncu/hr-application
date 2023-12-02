@@ -76,23 +76,25 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void update(UpdateEmployeeRequest request, String id) {
+    public void update(String id, UpdateEmployeeRequest request) {
+        EmployeeEntity existingEmployeeEntity = employeeRepository.findById(id);
 
-        EmployeeEntity existingEmployeeEntity = employeeRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Employee not found"));
+        if (existingEmployeeEntity != null) {
+            validateUniqueEmail(request.email());
+            validateUniqueUsername(request.username());
 
-        validateUniqueEmail(request.email());
-        validateUniqueUsername(request.username());
+            Employee updatedEmployee = new Employee();
+            updatedEmployee.setId(id);
+            updatedEmployee.setUsername(request.username());
+            updatedEmployee.setFirstName(request.firstName());
+            updatedEmployee.setLastName(request.lastName());
+            updatedEmployee.setEmail(request.email());
+            updatedEmployee.setGender(request.gender());
 
-        Employee updatedEmployee = new Employee();
-        updatedEmployee.setUsername(request.username());
-        updatedEmployee.setFirstName(request.firstName());
-        updatedEmployee.setLastName(request.lastName());
-        updatedEmployee.setEmail(request.email());
-        updatedEmployee.setGender(request.gender());
-
-        employeeRepository.update(updatedEmployee.toEmployee());
+            employeeRepository.update(updatedEmployee.toEmployee());
+        }
     }
+
 
     private void validateUniqueEmail(String email) {
         if (employeeRepository.findByEmail(email).isPresent()) {
@@ -106,18 +108,22 @@ class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+
     @Override
-    public void changePassword(ChangePasswordRequest request) {
+    public void changePassword(String id, ChangePasswordRequest request) {
+        EmployeeEntity employeeEntity = employeeRepository.findById(id);
 
-        Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(request.id());
-
-        if (employeeEntity.isEmpty()) {
+        if (employeeEntity == null) {
             throw new AuthenticationException("User not found");
         }
-        if (!employeeEntity.get().getPassword().equals(request.oldPassword())) {
+
+        String oldPassword = employeeEntity.getPassword();
+
+        if (oldPassword == null || !oldPassword.equals(request.oldPassword())) {
             throw new AuthenticationException("Invalid password");
         }
-        employeeRepository.changePassword(request.id(), request.newPassword());
 
+        employeeRepository.changePassword(id, request.newPassword());
     }
+
 }

@@ -2,16 +2,14 @@ package com.violet.hrapplication.employee.controller;
 
 import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
+import com.violet.hrapplication.employee.controller.request.UpdateEmployeeRequest;
 import com.violet.hrapplication.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/employee")
 class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -20,19 +18,30 @@ class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/employee")
+    @PostMapping("/create")
     public void createEmployee(
             @RequestBody @Valid CreateEmployeeRequest request
     ) {
         employeeService.create(request);
     }
 
-    @PostMapping("/change-password")
-    public ResponseEntity<Void> changePassword(
-            @RequestBody ChangePasswordRequest changePasswordRequest
+    @PostMapping("/update/{id}")
+    public void updateEmployee(
+            @PathVariable String id,
+            @RequestBody  UpdateEmployeeRequest request
     ) {
-        employeeService.changePassword(changePasswordRequest);
+        employeeService.update(id, request);
+    }
+
+    @PostMapping("/{id}/change-password")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable String id,
+            @RequestBody @Valid ChangePasswordRequest changePasswordRequest
+    ) {
+        employeeService.changePassword(id, changePasswordRequest);
 
         return ResponseEntity.ok().build();
     }
+
+
 }

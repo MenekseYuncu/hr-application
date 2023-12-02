@@ -9,15 +9,13 @@ public class LeaveTypeEntity {
     private String id;
     private String name;
     private int maxDays;
-    private Gender gender;
     private String creator;
     private LocalDateTime creationTime;
 
-    public LeaveTypeEntity(String id, String name, int maxDays, Gender gender, String creator, LocalDateTime creationTime) {
+    public LeaveTypeEntity(String id, String name, int maxDays, String creator, LocalDateTime creationTime) {
         this.id = id;
         this.name = name;
         this.maxDays = maxDays;
-        this.gender = gender;
         this.creator = creator;
         this.creationTime = creationTime;
     }
@@ -44,14 +42,6 @@ public class LeaveTypeEntity {
 
     public void setMaxDays(int maxDays) {
         this.maxDays = maxDays;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
     }
 
     public String getCreator() {

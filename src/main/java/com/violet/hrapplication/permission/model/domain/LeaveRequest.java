@@ -1,12 +1,12 @@
-package com.violet.hrapplication.permission.model.entity;
+package com.violet.hrapplication.permission.model.domain;
 
-
+import com.violet.hrapplication.permission.model.entity.LeaveRequestEntity;
 import com.violet.hrapplication.permission.model.enums.State;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class LeaveRequestEntity {
+public class LeaveRequest {
 
     private String id;
     private String employeeId;
@@ -17,15 +17,17 @@ public class LeaveRequestEntity {
     private String creator;
     private LocalDateTime creationTime;
 
-    public LeaveRequestEntity(String id, String employeeId, LocalDate startDate, LocalDate endDate, String leaveTypeId, State state, String creator, LocalDateTime creationTime) {
-        this.id = id;
-        this.employeeId = employeeId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.leaveTypeId = leaveTypeId;
-        this.state = state;
-        this.creator = creator;
-        this.creationTime = creationTime;
+    public LeaveRequestEntity toLeaveRequest() {
+        return new LeaveRequestEntity(
+                id,
+                employeeId,
+                startDate,
+                endDate,
+                leaveTypeId,
+                state,
+                creator,
+                creationTime
+        );
     }
 
     public String getId() {

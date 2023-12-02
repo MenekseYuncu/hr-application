@@ -12,17 +12,12 @@ public interface EmployeeRepository {
 
     void update(EmployeeEntity employeeEntity);
 
-    Set<EmployeeEntity> findAll();
-
     Optional<EmployeeEntity> findByUsername(String username);
 
-    List<String> findAllByUsername(String username);
-
-    Optional<EmployeeEntity> findById(String id);
+    EmployeeEntity findById(String id);
 
     Optional<EmployeeEntity> findByEmail(String email);
 
-    void changePassword(String username, String newPassword);
+    void changePassword(String id, String newPassword);
 
-    void authenticateUser(String username, String password);
 }

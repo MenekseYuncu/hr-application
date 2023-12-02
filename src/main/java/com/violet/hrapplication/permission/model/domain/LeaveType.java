@@ -1,6 +1,5 @@
 package com.violet.hrapplication.permission.model.domain;
 
-import com.violet.hrapplication.employee.model.enums.Gender;
 import com.violet.hrapplication.permission.model.entity.LeaveTypeEntity;
 
 import java.time.LocalDateTime;
@@ -9,8 +8,7 @@ public class LeaveType {
 
     private String id;
     private String name;
-    private int maydays;
-    private Gender gender;
+    private int maxDays;
     private String creator;
     private LocalDateTime creationTime;
 
@@ -18,8 +16,7 @@ public class LeaveType {
         return new LeaveTypeEntity(
                 id,
                 name,
-                maydays,
-                gender,
+                maxDays,
                 creator,
                 creationTime
         );
@@ -41,20 +38,12 @@ public class LeaveType {
         this.name = name;
     }
 
-    public int getMaydays() {
-        return maydays;
+    public int getMaxDays() {
+        return maxDays;
     }
 
-    public void setMaydays(int maydays) {
-        this.maydays = maydays;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public void setMaxDays(int maxDays) {
+        this.maxDays = maxDays;
     }
 
     public String getCreator() {

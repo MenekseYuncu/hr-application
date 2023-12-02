@@ -11,6 +11,7 @@ import org.sql2o.Sql2o;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -37,11 +38,32 @@ class PermissionRepositoryImpl implements PermissionRepository {
     }
 
     @Override
-    public Set<LeaveRequestEntity> findAll() {
-        try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_ALL)
+    public Optional<LeaveRequestEntity> findById(String id) {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_BY_ID)
+                .addParameter(LeaveRequestMapping.ID.getPropertyName(), id)
                 .setColumnMappings(LeaveRequestMapping.getMapping())) {
-            List<LeaveRequestEntity> leaveRequestEntities = query.executeAndFetch(LeaveRequestEntity.class);
-            return new HashSet<>(leaveRequestEntities);
+
+            return Optional.ofNullable(query.executeAndFetchFirst(LeaveRequestEntity.class));
+        }
+    }
+
+    @Override
+    public List<LeaveRequestEntity> findByEmployeeId(String id) {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_BY_EMPLOYEE_ID)){
+            return query
+                    .addParameter(LeaveRequestMapping.ID.getPropertyName(), id)
+                    .setColumnMappings(LeaveRequestMapping.getMapping())
+                    .executeAndFetch(LeaveRequestEntity.class);
+        }
+    }
+
+
+    @Override
+    public List<LeaveRequestEntity> findAll() {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_ALL)){
+            return query
+                    .setColumnMappings(LeaveRequestMapping.getMapping())
+                    .executeAndFetch(LeaveRequestEntity.class);
         }
     }
 

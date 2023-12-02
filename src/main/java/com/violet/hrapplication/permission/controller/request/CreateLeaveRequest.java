@@ -1,16 +1,29 @@
 package com.violet.hrapplication.permission.controller.request;
 
+import com.violet.hrapplication.permission.model.enums.State;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
-public record CreateLeaveRequest (
+public record CreateLeaveRequest(
 
-        String id,
+        @NotEmpty
         String employeeId,
+        @NotNull
         LocalDate startDate,
+        @NotNull
         LocalDate endDate,
+        @NotEmpty
         String leaveTypeId,
-        boolean approved,
+        State state, // Set a default value for the state
+        @NotBlank
         String creator
-){
-
+) {
+        public CreateLeaveRequest {
+                if (state == null) {
+                        state = State.APPROVED; // Set default value to APPROVED
+                }
+        }
 }

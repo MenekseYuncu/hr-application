@@ -8,7 +8,8 @@ public interface EmployeeService {
 
     void create(CreateEmployeeRequest request);
 
-    void update(UpdateEmployeeRequest request, String id);
+    void update(String id, UpdateEmployeeRequest request);
 
-    void changePassword(ChangePasswordRequest changePasswordRequest);
+    void changePassword(String id, ChangePasswordRequest changePasswordRequest);
+
 }

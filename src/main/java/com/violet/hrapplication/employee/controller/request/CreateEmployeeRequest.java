@@ -14,8 +14,7 @@ public record CreateEmployeeRequest(
         String firstName,
         @NotBlank
         String lastName,
-        @Email
-        @NotBlank
+
         String email,
         @Past
         LocalDate birthday,
