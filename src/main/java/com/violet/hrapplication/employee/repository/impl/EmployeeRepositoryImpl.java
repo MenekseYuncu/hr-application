@@ -1,18 +1,18 @@
 package com.violet.hrapplication.employee.repository.impl;
 
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
-import com.violet.hrapplication.employee.model.scriptsandmap.EmployeeMapping;
-import com.violet.hrapplication.employee.model.scriptsandmap.EmployeeScripts;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
+import com.violet.hrapplication.employee.repository.mapping.EmployeeMapping;
+import com.violet.hrapplication.employee.repository.script.EmployeeScripts;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 class EmployeeRepositoryImpl implements EmployeeRepository {
@@ -58,14 +58,20 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
         }
     }
 
+    @Override
+    public List<EmployeeEntity> findAll() {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_ALL)) {
+            List<EmployeeEntity> result = query
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
+                    .executeAndFetch(EmployeeEntity.class);
+            return Objects.requireNonNullElse(result, Collections.emptyList());
+        }
+    }
 
     @Override
     public Optional<EmployeeEntity> findByUsername(String username) {
 
-        String sql = "SELECT ID, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, BIRTHDAY, START_WORKING_DATE, ROLE, GENDER, CREATOR, CREATION_TIME " +
-                "FROM EMPLOYEE WHERE USERNAME = :username";
-
-        try (Connection con = sql2o.open(); Query query = con.createQuery(sql)) {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_USERNAME)) {
             EmployeeEntity result = query
                     .addParameter("username", username)
                     .addColumnMapping("ID", "id")
@@ -113,7 +119,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_EMAIL)
                 .addParameter(EmployeeMapping.EMAIL.getPropertyName(), email)
-                .setColumnMappings(EmployeeMapping.getMapping())) {
+                .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)) {
 
             EmployeeEntity result = query.executeAndFetchFirst(EmployeeEntity.class);
             return Optional.of(result);
@@ -124,7 +130,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     public void changePassword(String id, String newPassword) {
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.CHANGE_PASSWORD)
                 .addParameter("id", id)
-                .addParameter("newPassword", newPassword)) {
+                .addParameter("password", newPassword)) {
             query.executeUpdate();
         }
     }

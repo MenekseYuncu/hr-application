@@ -3,10 +3,13 @@ package com.violet.hrapplication.employee.controller;
 import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
 import com.violet.hrapplication.employee.controller.request.UpdateEmployeeRequest;
+import com.violet.hrapplication.employee.controller.response.EmployeeResponse;
 import com.violet.hrapplication.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/employee")
@@ -18,6 +21,11 @@ class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    @GetMapping
+    public List<EmployeeResponse> findAll() {
+        return employeeService.findAll();
+    }
+
     @PostMapping("/create")
     public void createEmployee(
             @RequestBody @Valid CreateEmployeeRequest request
@@ -25,15 +33,15 @@ class EmployeeController {
         employeeService.create(request);
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/{id}")
     public void updateEmployee(
             @PathVariable String id,
-            @RequestBody  UpdateEmployeeRequest request
+            @RequestBody @Valid UpdateEmployeeRequest request
     ) {
         employeeService.update(id, request);
     }
 
-    @PostMapping("/{id}/change-password")
+    @PutMapping("/{id}/password")
     public ResponseEntity<Void> changePassword(
             @PathVariable String id,
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest

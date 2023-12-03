@@ -3,6 +3,7 @@ package com.violet.hrapplication.employee.service.impl;
 import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
 import com.violet.hrapplication.employee.controller.request.UpdateEmployeeRequest;
+import com.violet.hrapplication.employee.controller.response.EmployeeResponse;
 import com.violet.hrapplication.employee.model.domain.Employee;
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -64,7 +66,6 @@ class EmployeeServiceImpl implements EmployeeService {
         throw new UserNameAlreadyExists();
     }
 
-
     private String generateUsername(Employee employee) {
         int uniques = 1000 + EmployeeServiceImpl.random.nextInt(9000);
         return employee.getFirstName().toLowerCase() + "-" + employee.getLastName().toLowerCase() + "-" + uniques;
@@ -81,11 +82,9 @@ class EmployeeServiceImpl implements EmployeeService {
 
         if (existingEmployeeEntity != null) {
             validateUniqueEmail(request.email());
-            validateUniqueUsername(request.username());
 
             Employee updatedEmployee = new Employee();
             updatedEmployee.setId(id);
-            updatedEmployee.setUsername(request.username());
             updatedEmployee.setFirstName(request.firstName());
             updatedEmployee.setLastName(request.lastName());
             updatedEmployee.setEmail(request.email());
@@ -95,19 +94,29 @@ class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @Override
+    public List<EmployeeResponse> findAll() {
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
+        return employeeEntities.stream()
+                .map(employeeEntity -> new EmployeeResponse(
+                        employeeEntity.getUsername(),
+                        employeeEntity.getFirstName(),
+                        employeeEntity.getLastName(),
+                        employeeEntity.getEmail(),
+                        employeeEntity.getBirthday(),
+                        employeeEntity.getStartWorkingDate(),
+                        employeeEntity.getRole(),
+                        employeeEntity.getGender(),
+                        employeeEntity.getCreator(),
+                        employeeEntity.getCreationTime()
+                )).toList();
+    }
 
     private void validateUniqueEmail(String email) {
         if (employeeRepository.findByEmail(email).isPresent()) {
             throw new UserNotFoundException("Email already exists");
         }
     }
-
-    private void validateUniqueUsername(String username) {
-        if (employeeRepository.findByUsername(username).isPresent()) {
-            throw new UserNotFoundException("Username already exists");
-        }
-    }
-
 
     @Override
     public void changePassword(String id, ChangePasswordRequest request) {

@@ -1,28 +1,30 @@
 package com.violet.hrapplication.employee.controller.request;
 
 import com.violet.hrapplication.employee.model.enums.Gender;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.EnumSet;
+
 public record UpdateEmployeeRequest(
 
-        //@NotBlank
-        String username,
         String password,
-        //@NotBlank
+        @NotBlank
         String firstName,
-        //@NotBlank
+        @NotBlank
         String lastName,
-       // @Email
-        //@NotBlank
+        @Email
+        @NotBlank
         String email,
-      //  @Nullable
         Gender gender
 ) {
     @AssertTrue(message = "Gender must be 'male' or 'female'")
     private boolean isGenderValid() {
-        return "male".equalsIgnoreCase(this.gender.name()) || "female".equalsIgnoreCase(this.gender.name());
+        EnumSet<Gender> acceptableGenders = EnumSet.of(
+                Gender.MALE,
+                Gender.FEMALE
+        );
+        return acceptableGenders.contains(this.gender);
     }
 }

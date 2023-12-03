@@ -1,7 +1,6 @@
-package com.violet.hrapplication.employee.model.scriptsandmap;
+package com.violet.hrapplication.employee.repository.mapping;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,6 @@ public enum EmployeeMapping {
 
     private final String columnName;
     private final String propertyName;
-    private static final Map<String, String> mapping = new HashMap<>();
 
     EmployeeMapping(String columnName, String propertyName) {
         this.columnName = columnName;
@@ -37,12 +35,6 @@ public enum EmployeeMapping {
         return propertyName;
     }
 
-    static {
-        mapping.putAll(Arrays.stream(values())
-                .collect(Collectors.toMap(EmployeeMapping::getColumnName, EmployeeMapping::getPropertyName)));
-    }
-
-    public static Map<String, String> getMapping() {
-        return mapping;
-    }
+    public static final Map<String, String> COLUMN_MAPPING = Arrays.stream(values())
+            .collect(Collectors.toMap(EmployeeMapping::getColumnName, EmployeeMapping::getPropertyName));
 }

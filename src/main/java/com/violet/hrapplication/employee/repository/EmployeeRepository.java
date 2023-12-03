@@ -12,6 +12,8 @@ public interface EmployeeRepository {
 
     void update(EmployeeEntity employeeEntity);
 
+    List<EmployeeEntity> findAll();
+
     Optional<EmployeeEntity> findByUsername(String username);
 
     EmployeeEntity findById(String id);

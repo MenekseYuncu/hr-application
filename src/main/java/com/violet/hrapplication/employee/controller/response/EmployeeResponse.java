@@ -1,17 +1,14 @@
-package com.violet.hrapplication.employee.model.entity;
+package com.violet.hrapplication.employee.controller.response;
 
 import com.violet.hrapplication.employee.model.enums.Gender;
 import com.violet.hrapplication.employee.model.enums.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-public class EmployeeEntity {
+public class EmployeeResponse {
 
-    private String id;
     private String username;
-    private String password;
     private String firstName;
     private String lastName;
     private String email;
@@ -22,10 +19,8 @@ public class EmployeeEntity {
     private String creator;
     private LocalDateTime creationTime;
 
-    public EmployeeEntity(String id, String username, String password, String firstName, String lastName, String email, LocalDate birthday, LocalDate startWorkingDate, Role role, Gender gender, String creator, LocalDateTime creationTime) {
-        this.id = id;
+    public EmployeeResponse(String username, String firstName, String lastName, String email, LocalDate birthday, LocalDate startWorkingDate, Role role, Gender gender, String creator, LocalDateTime creationTime) {
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -37,28 +32,12 @@ public class EmployeeEntity {
         this.creationTime = creationTime;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -129,8 +108,7 @@ public class EmployeeEntity {
         return creationTime;
     }
 
-    public void setCreationTime(String creationTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        this.creationTime = LocalDateTime.parse(creationTime, formatter);
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 }

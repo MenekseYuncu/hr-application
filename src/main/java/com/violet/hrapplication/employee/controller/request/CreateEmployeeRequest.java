@@ -8,13 +8,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 
 import java.time.LocalDate;
+import java.util.EnumSet;
 
 public record CreateEmployeeRequest(
         @NotBlank
         String firstName,
         @NotBlank
         String lastName,
-
+        @Email
         String email,
         @Past
         LocalDate birthday,
@@ -25,11 +26,18 @@ public record CreateEmployeeRequest(
 ) {
     @AssertTrue(message = "Role must be 'employee'")
     private boolean isEmployeeRoleValid() {
-        return "EMPLOYEE".equalsIgnoreCase(this.role.name());
+        EnumSet<Role> acceptableRoles = EnumSet.of(
+                Role.EMPLOYEE
+        );
+        return acceptableRoles.contains(this.role);
     }
 
     @AssertTrue(message = "Gender must be 'male' or 'female'")
     private boolean isGenderValid() {
-        return "male".equalsIgnoreCase(this.gender.name()) || "female".equalsIgnoreCase(this.gender.name());
+        EnumSet<Gender> acceptableGenders = EnumSet.of(
+                Gender.MALE,
+                Gender.FEMALE
+        );
+        return acceptableGenders.contains(this.gender);
     }
 }
