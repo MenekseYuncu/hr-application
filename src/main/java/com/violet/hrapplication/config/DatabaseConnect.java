@@ -5,8 +5,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.sql2o.Sql2o;
+import org.sql2o.converters.Converter;
+import org.sql2o.quirks.NoQuirks;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 class DatabaseConnect {
@@ -31,7 +37,10 @@ class DatabaseConnect {
     }
 
     @Bean
-    public Sql2o sql2o(DataSource dataSource) {
-        return new Sql2o(dataSource);
+    public Sql2o sql2o() {
+        final Map<Class, Converter> converters = new HashMap<>();
+        converters.put(LocalDate.class, new LocalDateConverter());
+        converters.put(LocalDateTime.class, new LocalDateTimeConverter());
+        return new Sql2o(dataSource(), new NoQuirks(converters));
     }
 }
