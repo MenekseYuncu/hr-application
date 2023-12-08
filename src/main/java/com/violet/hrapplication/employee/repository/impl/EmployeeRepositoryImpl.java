@@ -25,36 +25,34 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public void save(EmployeeEntity employeeEntity) {
-
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.SAVE)
-                .addParameter(EmployeeMapping.ID.getPropertyName(), employeeEntity.getId())
-                .addParameter(EmployeeMapping.FIRST_NAME.getPropertyName(), employeeEntity.getFirstName())
-                .addParameter(EmployeeMapping.LAST_NAME.getPropertyName(), employeeEntity.getLastName())
-                .addParameter(EmployeeMapping.EMAIL.getPropertyName(), employeeEntity.getEmail())
-                .addParameter(EmployeeMapping.BIRTHDAY.getPropertyName(), employeeEntity.getBirthday())
-                .addParameter(EmployeeMapping.START_WORKING_DATE.getPropertyName(), employeeEntity.getStartWorkingDate())
-                .addParameter(EmployeeMapping.ROLE.getPropertyName(), employeeEntity.getRole())
-                .addParameter(EmployeeMapping.GENDER.getPropertyName(), employeeEntity.getGender())
-                .addParameter(EmployeeMapping.CREATOR.getPropertyName(), employeeEntity.getCreator())
-                .addParameter(EmployeeMapping.CREATION_TIME.getPropertyName(), employeeEntity.getCreationTime())
-                .addParameter(EmployeeMapping.USERNAME.getPropertyName(), employeeEntity.getUsername())
-                .addParameter(EmployeeMapping.PASSWORD.getPropertyName(), employeeEntity.getPassword())) {
-            query.executeUpdate();
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.SAVE)) {
+            query
+                    .addParameter(EmployeeMapping.ID.getPropertyName(), employeeEntity.getId())
+                    .addParameter(EmployeeMapping.FIRST_NAME.getPropertyName(), employeeEntity.getFirstName())
+                    .addParameter(EmployeeMapping.LAST_NAME.getPropertyName(), employeeEntity.getLastName())
+                    .addParameter(EmployeeMapping.EMAIL.getPropertyName(), employeeEntity.getEmail())
+                    .addParameter(EmployeeMapping.BIRTHDAY.getPropertyName(), employeeEntity.getBirthday())
+                    .addParameter(EmployeeMapping.START_WORKING_DATE.getPropertyName(), employeeEntity.getStartWorkingDate())
+                    .addParameter(EmployeeMapping.ROLE.getPropertyName(), employeeEntity.getRole())
+                    .addParameter(EmployeeMapping.GENDER.getPropertyName(), employeeEntity.getGender())
+                    .addParameter(EmployeeMapping.CREATOR.getPropertyName(), employeeEntity.getCreator())
+                    .addParameter(EmployeeMapping.CREATION_TIME.getPropertyName(), employeeEntity.getCreationTime())
+                    .addParameter(EmployeeMapping.USERNAME.getPropertyName(), employeeEntity.getUsername())
+                    .addParameter(EmployeeMapping.PASSWORD.getPropertyName(), employeeEntity.getPassword())
+                    .executeUpdate();
         }
     }
 
     @Override
     public void update(EmployeeEntity employeeEntity) {
-
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.UPDATE)
-                .addParameter(EmployeeMapping.ID.getPropertyName(), employeeEntity.getId())
-                .addParameter(EmployeeMapping.USERNAME.getPropertyName(), employeeEntity.getUsername())
-                .addParameter(EmployeeMapping.PASSWORD.getPropertyName(), employeeEntity.getPassword())
-                .addParameter(EmployeeMapping.FIRST_NAME.getPropertyName(), employeeEntity.getFirstName())
-                .addParameter(EmployeeMapping.LAST_NAME.getPropertyName(), employeeEntity.getLastName())
-                .addParameter(EmployeeMapping.EMAIL.getPropertyName(), employeeEntity.getEmail())
-                .addParameter(EmployeeMapping.GENDER.getPropertyName(), employeeEntity.getGender())) {
-            query.executeUpdate();
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.UPDATE)) {
+            query
+                    .addParameter(EmployeeMapping.ID.getPropertyName(), employeeEntity.getId())
+                    .addParameter(EmployeeMapping.FIRST_NAME.getPropertyName(), employeeEntity.getFirstName())
+                    .addParameter(EmployeeMapping.LAST_NAME.getPropertyName(), employeeEntity.getLastName())
+                    .addParameter(EmployeeMapping.EMAIL.getPropertyName(), employeeEntity.getEmail())
+                    .addParameter(EmployeeMapping.GENDER.getPropertyName(), employeeEntity.getGender())
+                    .executeUpdate();
         }
     }
 
@@ -70,22 +68,10 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public Optional<EmployeeEntity> findByUsername(String username) {
-
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_USERNAME)) {
             EmployeeEntity result = query
-                    .addParameter("username", username)
-                    .addColumnMapping("ID", "id")
-                    .addColumnMapping("USERNAME", "username")
-                    .addColumnMapping("PASSWORD", "password")
-                    .addColumnMapping("FIRST_NAME", "firstName")
-                    .addColumnMapping("LAST_NAME", "lastName")
-                    .addColumnMapping("EMAIL", "email")
-                    .addColumnMapping("BIRTHDAY", "birthday")
-                    .addColumnMapping("START_WORKING_DATE", "startWorkingDate")
-                    .addColumnMapping("ROLE", "role")
-                    .addColumnMapping("GENDER", "gender")
-                    .addColumnMapping("CREATOR", "creator")
-                    .addColumnMapping("CREATION_TIME", "creationTime")
+                    .addParameter(EmployeeMapping.USERNAME.getPropertyName(), username)
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
                     .executeAndFetchFirst(EmployeeEntity.class);
 
             return Optional.ofNullable(result);
@@ -96,19 +82,8 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     public EmployeeEntity findById(String id) {
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_ID)) {
             return query
-                    .addParameter("id", id)
-                    .addColumnMapping("ID", "id")
-                    .addColumnMapping("USERNAME", "username")
-                    .addColumnMapping("PASSWORD", "password")
-                    .addColumnMapping("FIRST_NAME", "firstName")
-                    .addColumnMapping("LAST_NAME", "lastName")
-                    .addColumnMapping("EMAIL", "email")
-                    .addColumnMapping("BIRTHDAY", "birthday")
-                    .addColumnMapping("START_WORKING_DATE", "startWorkingDate")
-                    .addColumnMapping("ROLE", "role")
-                    .addColumnMapping("GENDER", "gender")
-                    .addColumnMapping("CREATOR", "creator")
-                    .addColumnMapping("CREATION_TIME", "creationTime")
+                    .addParameter(EmployeeMapping.ID.getPropertyName(), id)
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
                     .executeAndFetchFirst(EmployeeEntity.class);
         }
 
@@ -116,22 +91,22 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     @Override
     public Optional<EmployeeEntity> findByEmail(String email) {
-
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_EMAIL)
-                .addParameter(EmployeeMapping.EMAIL.getPropertyName(), email)
-                .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)) {
-
-            EmployeeEntity result = query.executeAndFetchFirst(EmployeeEntity.class);
-            return Optional.of(result);
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_EMAIL)) {
+            EmployeeEntity result = query
+                    .addParameter(EmployeeMapping.EMAIL.getPropertyName(), email)
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
+                    .executeAndFetchFirst(EmployeeEntity.class);
+            return Optional.ofNullable(result);
         }
     }
 
     @Override
     public void changePassword(String id, String newPassword) {
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.CHANGE_PASSWORD)
-                .addParameter("id", id)
-                .addParameter("password", newPassword)) {
-            query.executeUpdate();
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.CHANGE_PASSWORD)) {
+            query
+                    .addParameter(EmployeeMapping.ID.getPropertyName(), id)
+                    .addParameter(EmployeeMapping.PASSWORD.getPropertyName(), newPassword)
+                    .executeUpdate();
         }
     }
 }

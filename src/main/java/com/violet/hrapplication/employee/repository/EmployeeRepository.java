@@ -4,7 +4,6 @@ import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface EmployeeRepository {
 

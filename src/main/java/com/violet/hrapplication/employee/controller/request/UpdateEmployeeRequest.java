@@ -9,7 +9,6 @@ import java.util.EnumSet;
 
 public record UpdateEmployeeRequest(
 
-        String password,
         @NotBlank
         String firstName,
         @NotBlank

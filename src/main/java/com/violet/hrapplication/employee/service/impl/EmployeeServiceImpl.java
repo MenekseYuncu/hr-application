@@ -50,7 +50,6 @@ class EmployeeServiceImpl implements EmployeeService {
 
         isUsernameUniqueExists(employee);
 
-
         employeeRepository.save(employee.toEmployee());
     }
 
@@ -94,6 +93,12 @@ class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    private void validateUniqueEmail(String email) {
+        if (employeeRepository.findByEmail(email).isPresent()) {
+            throw new UserNotFoundException("Email already exists");
+        }
+    }
+
     @Override
     public List<EmployeeResponse> findAll() {
         List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
@@ -112,12 +117,6 @@ class EmployeeServiceImpl implements EmployeeService {
                 )).toList();
     }
 
-    private void validateUniqueEmail(String email) {
-        if (employeeRepository.findByEmail(email).isPresent()) {
-            throw new UserNotFoundException("Email already exists");
-        }
-    }
-
     @Override
     public void changePassword(String id, ChangePasswordRequest request) {
         EmployeeEntity employeeEntity = employeeRepository.findById(id);
@@ -125,14 +124,10 @@ class EmployeeServiceImpl implements EmployeeService {
         if (employeeEntity == null) {
             throw new AuthenticationException("User not found");
         }
-
         String oldPassword = employeeEntity.getPassword();
-
         if (oldPassword == null || !oldPassword.equals(request.oldPassword())) {
             throw new AuthenticationException("Invalid password");
         }
-
         employeeRepository.changePassword(id, request.newPassword());
     }
-
 }
