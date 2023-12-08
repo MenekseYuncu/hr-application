@@ -1,7 +1,9 @@
 package com.violet.hrapplication.permission.service.impl;
 
 import com.violet.hrapplication.permission.controller.request.CreateLeaveTypeRequest;
+import com.violet.hrapplication.permission.controller.request.UpdateLeaveTypeRequest;
 import com.violet.hrapplication.permission.model.domain.LeaveType;
+import com.violet.hrapplication.permission.model.entity.LeaveTypeEntity;
 import com.violet.hrapplication.permission.repository.LeaveTypeRepository;
 import com.violet.hrapplication.permission.service.LeaveTypeService;
 import org.springframework.stereotype.Service;
@@ -29,5 +31,25 @@ class LeaveTypeServiceImpl implements LeaveTypeService {
         leaveType.setCreationTime(LocalDateTime.now());
 
         leaveTypeRepository.save(leaveType.toLeaveType());
+    }
+
+    @Override
+    public void update(String id, UpdateLeaveTypeRequest leaveTypeRequest) {
+        LeaveTypeEntity existingLeaveType = leaveTypeRepository.findById(id);
+
+        if (existingLeaveType != null) {
+
+            LeaveType leaveType = new LeaveType();
+            leaveType.setId(id);
+            leaveType.setName(leaveTypeRequest.name());
+            leaveType.setMaxDays(leaveTypeRequest.maxDays());
+
+            leaveTypeRepository.update(leaveType.toLeaveType());
+        }
+    }
+
+    @Override
+    public void delete(String id) {
+        leaveTypeRepository.delete(id);
     }
 }

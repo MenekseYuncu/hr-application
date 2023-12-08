@@ -1,7 +1,5 @@
 package com.violet.hrapplication.permission.model.entity;
 
-import com.violet.hrapplication.employee.model.enums.Gender;
-
 import java.time.LocalDateTime;
 
 public class LeaveTypeEntity {
