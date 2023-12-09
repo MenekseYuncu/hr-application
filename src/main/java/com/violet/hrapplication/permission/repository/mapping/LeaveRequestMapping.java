@@ -1,8 +1,6 @@
-package com.violet.hrapplication.permission.model.mapandscript;
+package com.violet.hrapplication.permission.repository.mapping;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,13 +15,9 @@ public enum LeaveRequestMapping {
     CREATOR("CREATOR", "creator"),
     CREATION_TIME("CREATION_TIME", "creationTime");
 
-
     private final String columnName;
 
     private final String propertyName;
-
-    private static final Map<String, String> mapping = new HashMap<>();
-
 
     LeaveRequestMapping(String columnName, String propertyName) {
         this.columnName = columnName;
@@ -38,13 +32,6 @@ public enum LeaveRequestMapping {
         return propertyName;
     }
 
-    static {
-        for (LeaveRequestMapping leaveRequestMapping : LeaveRequestMapping.values()) {
-            mapping.put(leaveRequestMapping.getColumnName(), leaveRequestMapping.getPropertyName());
-        }
-    }
-
-    public static Map<String, String> getMapping() {
-        return mapping;
-    }
+    public static final Map<String, String> COLUMN_MAPPING = Arrays.stream(values())
+            .collect(Collectors.toMap(LeaveRequestMapping::getColumnName, LeaveRequestMapping::getPropertyName));
 }

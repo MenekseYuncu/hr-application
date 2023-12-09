@@ -2,7 +2,8 @@ package com.violet.hrapplication.permission.repository.script;
 
 public class LeaveTypeScripts {
 
-    private LeaveTypeScripts() {}
+    private LeaveTypeScripts() {
+    }
 
     public static final String SAVE = "INSERT INTO LEAVE_TYPE (" +
             "ID, NAME, MAX_DAYS, CREATOR, CREATION_TIME) " +

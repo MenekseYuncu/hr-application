@@ -16,5 +16,4 @@ public interface EmployeeService {
     List<EmployeeResponse> findAll();
 
     void changePassword(String id, ChangePasswordRequest changePasswordRequest);
-
 }

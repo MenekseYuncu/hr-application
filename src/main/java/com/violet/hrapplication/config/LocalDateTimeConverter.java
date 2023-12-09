@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public class LocalDateTimeConverter implements Converter<LocalDateTime> {
 
     public LocalDateTimeConverter() {
-
     }
 
     @Override

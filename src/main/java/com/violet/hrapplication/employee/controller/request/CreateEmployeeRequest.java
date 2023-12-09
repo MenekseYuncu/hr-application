@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.EnumSet;
 
 public record CreateEmployeeRequest(
+
         @NotBlank
         String firstName,
         @NotBlank

@@ -17,13 +17,13 @@ public record CreateLeaveRequest(
         LocalDate endDate,
         @NotEmpty
         String leaveTypeId,
-        State state, // Set a default value for the state
+        State state,
         @NotBlank
         String creator
 ) {
-        public CreateLeaveRequest {
-                if (state == null) {
-                        state = State.APPROVED; // Set default value to APPROVED
-                }
+    public CreateLeaveRequest {
+        if (state == null) {
+            state = State.APPROVED;
         }
+    }
 }

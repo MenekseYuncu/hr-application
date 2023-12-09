@@ -3,6 +3,8 @@ package com.violet.hrapplication.permission.controller;
 import com.violet.hrapplication.permission.controller.request.CreateLeaveTypeRequest;
 import com.violet.hrapplication.permission.controller.request.UpdateLeaveTypeRequest;
 import com.violet.hrapplication.permission.service.LeaveTypeService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,24 +18,27 @@ public class LeaveTypeController {
     }
 
     @PostMapping("/create")
-    public void createLeaveType(
-            @RequestBody CreateLeaveTypeRequest request
+    public ResponseEntity<Void> createLeaveType(
+            @RequestBody @Valid CreateLeaveTypeRequest request
     ) {
         leaveTypeService.create(request);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public void updateLeaveType(
+    public ResponseEntity<Void> updateLeaveType(
             @PathVariable String id,
-            @RequestBody UpdateLeaveTypeRequest request
+            @RequestBody @Valid UpdateLeaveTypeRequest request
     ) {
         leaveTypeService.update(id, request);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteLeaveType(
+    public ResponseEntity<Void> deleteLeaveType(
             @PathVariable String id
     ) {
         leaveTypeService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

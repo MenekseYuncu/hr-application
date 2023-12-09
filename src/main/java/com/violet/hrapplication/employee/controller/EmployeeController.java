@@ -27,18 +27,20 @@ class EmployeeController {
     }
 
     @PostMapping("/create")
-    public void createEmployee(
+    public ResponseEntity<Void> createEmployee(
             @RequestBody @Valid CreateEmployeeRequest request
     ) {
         employeeService.create(request);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public void updateEmployee(
+    public ResponseEntity<Void> updateEmployee(
             @PathVariable String id,
             @RequestBody @Valid UpdateEmployeeRequest request
     ) {
         employeeService.update(id, request);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}/password")
@@ -47,9 +49,6 @@ class EmployeeController {
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest
     ) {
         employeeService.changePassword(id, changePasswordRequest);
-
         return ResponseEntity.ok().build();
     }
-
-
 }

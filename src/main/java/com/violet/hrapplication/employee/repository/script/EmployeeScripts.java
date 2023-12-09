@@ -2,7 +2,8 @@ package com.violet.hrapplication.employee.repository.script;
 
 public final class EmployeeScripts {
 
-    private EmployeeScripts() {}
+    private EmployeeScripts() {
+    }
 
     public static final String SAVE = "INSERT INTO EMPLOYEE (" +
             "ID, USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, BIRTHDAY, START_WORKING_DATE,ROLE ,GENDER,CREATOR,CREATION_TIME) " +

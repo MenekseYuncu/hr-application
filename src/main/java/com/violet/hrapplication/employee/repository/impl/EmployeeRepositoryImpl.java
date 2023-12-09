@@ -86,7 +86,6 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
                     .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
                     .executeAndFetchFirst(EmployeeEntity.class);
         }
-
     }
 
     @Override
