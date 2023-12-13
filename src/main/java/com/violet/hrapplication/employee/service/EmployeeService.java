@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface EmployeeService {
 
+    List<EmployeeResponse> findAll();
+
     void create(CreateEmployeeRequest request);
 
     void update(String id, UpdateEmployeeRequest request);
-
-    List<EmployeeResponse> findAll();
 
     void changePassword(String id, ChangePasswordRequest changePasswordRequest);
 }

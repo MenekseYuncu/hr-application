@@ -7,18 +7,17 @@ import java.util.Optional;
 
 public interface EmployeeRepository {
 
-    void save(EmployeeEntity employeeEntity);
-
-    void update(EmployeeEntity employeeEntity);
-
     List<EmployeeEntity> findAll();
-
-    Optional<EmployeeEntity> findByUsername(String username);
 
     EmployeeEntity findById(String id);
 
     Optional<EmployeeEntity> findByEmail(String email);
 
-    void changePassword(String id, String newPassword);
+    Optional<EmployeeEntity> findByUsername(String username);
 
+    void save(EmployeeEntity employeeEntity);
+
+    void update(EmployeeEntity employeeEntity);
+
+    void changePassword(String id, String newPassword);
 }

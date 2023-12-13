@@ -6,7 +6,7 @@ import org.sql2o.converters.ConverterException;
 import java.sql.Date;
 import java.time.LocalDate;
 
-public class LocalDateConverter implements Converter<LocalDate> {
+class LocalDateConverter implements Converter<LocalDate> {
 
     public LocalDateConverter() {
     }

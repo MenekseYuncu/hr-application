@@ -6,11 +6,14 @@ import com.violet.hrapplication.employee.controller.request.UpdateEmployeeReques
 import com.violet.hrapplication.employee.controller.response.EmployeeResponse;
 import com.violet.hrapplication.employee.service.EmployeeService;
 import jakarta.validation.Valid;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/api/employee")
 class EmployeeController {
@@ -26,7 +29,7 @@ class EmployeeController {
         return employeeService.findAll();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Void> createEmployee(
             @RequestBody @Valid CreateEmployeeRequest request
     ) {
@@ -36,7 +39,7 @@ class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateEmployee(
-            @PathVariable String id,
+            @PathVariable @UUID String id,
             @RequestBody @Valid UpdateEmployeeRequest request
     ) {
         employeeService.update(id, request);

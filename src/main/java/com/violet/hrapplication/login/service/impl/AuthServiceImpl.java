@@ -23,10 +23,7 @@ class AuthServiceImpl implements AuthService {
 
         Optional<EmployeeEntity> employee = employeeRepository.findByUsername(loginRequest.username());
 
-        if (employee.isEmpty()) {
-            throw new AuthenticationException("Invalid username or password");
-        }
-        if (!employee.get().getPassword().equals(loginRequest.password())) {
+        if (employee.isEmpty() || !employee.get().getPassword().equals(loginRequest.password())) {
             throw new AuthenticationException("Invalid username or password");
         }
 

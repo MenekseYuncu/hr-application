@@ -11,6 +11,7 @@ import com.violet.hrapplication.employee.service.EmployeeService;
 import com.violet.hrapplication.exception.AuthenticationException;
 import com.violet.hrapplication.exception.UserNameAlreadyExists;
 import com.violet.hrapplication.exception.UserNotFoundException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,12 +23,30 @@ import java.util.UUID;
 
 @Service
 class EmployeeServiceImpl implements EmployeeService {
-
     private final EmployeeRepository employeeRepository;
     private static final Random random = new Random();
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
+    }
+
+
+    @Override
+    public List<EmployeeResponse> findAll() {
+        List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
+        return employeeEntities.stream()
+                .map(employeeEntity -> new EmployeeResponse(
+                        employeeEntity.getUsername(),
+                        employeeEntity.getFirstName(),
+                        employeeEntity.getLastName(),
+                        employeeEntity.getEmail(),
+                        employeeEntity.getBirthday(),
+                        employeeEntity.getStartWorkingDate(),
+                        employeeEntity.getRole(),
+                        employeeEntity.getGender(),
+                        employeeEntity.getCreator(),
+                        employeeEntity.getCreationTime()
+                )).toList();
     }
 
     @Override
@@ -46,7 +65,7 @@ class EmployeeServiceImpl implements EmployeeService {
         employee.setCreationTime(LocalDateTime.now());
 
         employee.setUsername(generateUsername(employee));
-        employee.setPassword(generatePassword());
+        employee.setPassword(RandomStringUtils.random(9, false, true));
 
         isUsernameUniqueExists(employee);
 
@@ -70,27 +89,24 @@ class EmployeeServiceImpl implements EmployeeService {
         return employee.getFirstName().toLowerCase() + "-" + employee.getLastName().toLowerCase() + "-" + uniques;
     }
 
-    private String generatePassword() {
-        int passwordNumber = (int) Math.pow(10, 8) + EmployeeServiceImpl.random.nextInt((int) (Math.pow(10, 8) * 9));
-        return Integer.toHexString(passwordNumber);
-    }
-
-    @Override
     public void update(String id, UpdateEmployeeRequest request) {
-        EmployeeEntity existingEmployeeEntity = employeeRepository.findById(id);
+        EmployeeEntity employeeEntityFromDatabase = employeeRepository.findById(id);
 
-        if (existingEmployeeEntity != null) {
-            validateUniqueEmail(request.email());
-
-            Employee updatedEmployee = new Employee();
-            updatedEmployee.setId(id);
-            updatedEmployee.setFirstName(request.firstName());
-            updatedEmployee.setLastName(request.lastName());
-            updatedEmployee.setEmail(request.email());
-            updatedEmployee.setGender(request.gender());
-
-            employeeRepository.update(updatedEmployee.toEmployee());
+        if (employeeEntityFromDatabase == null) {
+            return;
         }
+
+        if (!employeeEntityFromDatabase.getEmail().equals(request.email())) {
+            this.validateUniqueEmail(request.email());
+        }
+
+        employeeEntityFromDatabase.update(
+                request.firstName(),
+                request.lastName(),
+                request.email(),
+                request.gender()
+        );
+        employeeRepository.update(employeeEntityFromDatabase);
     }
 
     private void validateUniqueEmail(String email) {
@@ -99,23 +115,7 @@ class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    @Override
-    public List<EmployeeResponse> findAll() {
-        List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
-        return employeeEntities.stream()
-                .map(employeeEntity -> new EmployeeResponse(
-                        employeeEntity.getUsername(),
-                        employeeEntity.getFirstName(),
-                        employeeEntity.getLastName(),
-                        employeeEntity.getEmail(),
-                        employeeEntity.getBirthday(),
-                        employeeEntity.getStartWorkingDate(),
-                        employeeEntity.getRole(),
-                        employeeEntity.getGender(),
-                        employeeEntity.getCreator(),
-                        employeeEntity.getCreationTime()
-                )).toList();
-    }
+
 
     @Override
     public void changePassword(String id, ChangePasswordRequest request) {
@@ -125,7 +125,7 @@ class EmployeeServiceImpl implements EmployeeService {
             throw new AuthenticationException("User not found");
         }
         String oldPassword = employeeEntity.getPassword();
-        if (oldPassword == null || !oldPassword.equals(request.oldPassword())) {
+        if (!oldPassword.equals(request.oldPassword())) {
             throw new AuthenticationException("Invalid password");
         }
         employeeRepository.changePassword(id, request.newPassword());

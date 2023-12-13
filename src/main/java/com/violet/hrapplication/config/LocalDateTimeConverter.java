@@ -6,7 +6,7 @@ import org.sql2o.converters.ConverterException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class LocalDateTimeConverter implements Converter<LocalDateTime> {
+class LocalDateTimeConverter implements Converter<LocalDateTime> {
 
     public LocalDateTimeConverter() {
     }
@@ -17,7 +17,7 @@ public class LocalDateTimeConverter implements Converter<LocalDateTime> {
             return null;
         } else {
             try {
-                return Timestamp.valueOf(dateObject.toString()).toLocalDateTime();
+                return LocalDateTime.parse(dateObject.toString());
             } catch (IllegalArgumentException exception) {
                 var dateObjectClassName = dateObject.getClass().getName();
                 var localDateTimeClassName = LocalDateTime.class.getName();

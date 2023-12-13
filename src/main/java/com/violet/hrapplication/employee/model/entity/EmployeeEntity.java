@@ -37,6 +37,16 @@ public class EmployeeEntity {
         this.creationTime = creationTime;
     }
 
+    public void update(String firstName,
+                       String lastName,
+                       String email,
+                       Gender gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+    }
+
     public String getId() {
         return id;
     }

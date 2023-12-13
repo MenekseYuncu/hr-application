@@ -23,6 +23,53 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
         this.sql2o = sql2o;
     }
 
+
+    @Override
+    public List<EmployeeEntity> findAll() {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_ALL)) {
+            List<EmployeeEntity> result = query
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
+                    .executeAndFetch(EmployeeEntity.class);
+            return Objects.requireNonNullElse(result, Collections.emptyList());
+        }
+    }
+
+
+    @Override
+    public EmployeeEntity findById(String id) {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_ID)) {
+            return query
+                    .addParameter(EmployeeMapping.ID.getPropertyName(), id)
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
+                    .executeAndFetchFirst(EmployeeEntity.class);
+        }
+    }
+
+
+    @Override
+    public Optional<EmployeeEntity> findByUsername(String username) {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_USERNAME)) {
+            EmployeeEntity result = query
+                    .addParameter(EmployeeMapping.USERNAME.getPropertyName(), username)
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
+                    .executeAndFetchFirst(EmployeeEntity.class);
+
+            return Optional.ofNullable(result);
+        }
+    }
+
+    @Override
+    public Optional<EmployeeEntity> findByEmail(String email) {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_EMAIL)) {
+            EmployeeEntity result = query
+                    .addParameter(EmployeeMapping.EMAIL.getPropertyName(), email)
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
+                    .executeAndFetchFirst(EmployeeEntity.class);
+            return Optional.ofNullable(result);
+        }
+    }
+
+
     @Override
     public void save(EmployeeEntity employeeEntity) {
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.SAVE)) {
@@ -56,48 +103,6 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
         }
     }
 
-    @Override
-    public List<EmployeeEntity> findAll() {
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_ALL)) {
-            List<EmployeeEntity> result = query
-                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
-                    .executeAndFetch(EmployeeEntity.class);
-            return Objects.requireNonNullElse(result, Collections.emptyList());
-        }
-    }
-
-    @Override
-    public Optional<EmployeeEntity> findByUsername(String username) {
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_USERNAME)) {
-            EmployeeEntity result = query
-                    .addParameter(EmployeeMapping.USERNAME.getPropertyName(), username)
-                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
-                    .executeAndFetchFirst(EmployeeEntity.class);
-
-            return Optional.ofNullable(result);
-        }
-    }
-
-    @Override
-    public EmployeeEntity findById(String id) {
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_ID)) {
-            return query
-                    .addParameter(EmployeeMapping.ID.getPropertyName(), id)
-                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
-                    .executeAndFetchFirst(EmployeeEntity.class);
-        }
-    }
-
-    @Override
-    public Optional<EmployeeEntity> findByEmail(String email) {
-        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_EMAIL)) {
-            EmployeeEntity result = query
-                    .addParameter(EmployeeMapping.EMAIL.getPropertyName(), email)
-                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
-                    .executeAndFetchFirst(EmployeeEntity.class);
-            return Optional.ofNullable(result);
-        }
-    }
 
     @Override
     public void changePassword(String id, String newPassword) {
