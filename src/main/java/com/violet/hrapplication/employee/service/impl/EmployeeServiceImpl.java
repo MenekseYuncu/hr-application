@@ -90,11 +90,8 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void update(String id, UpdateEmployeeRequest request) {
-        EmployeeEntity employeeEntityFromDatabase = employeeRepository.findById(id);
-
-        if (employeeEntityFromDatabase == null) {
-            return;
-        }
+        EmployeeEntity employeeEntityFromDatabase = employeeRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Employee not found with id: " + id));
 
         if (!employeeEntityFromDatabase.getEmail().equals(request.email())) {
             this.validateUniqueEmail(request.email());
@@ -116,15 +113,14 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-
     @Override
     public void changePassword(String id, ChangePasswordRequest request) {
-        EmployeeEntity employeeEntity = employeeRepository.findById(id);
+        Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(id);
 
-        if (employeeEntity == null) {
+        if (employeeEntity.isEmpty()) {
             throw new AuthenticationException("User not found");
         }
-        String oldPassword = employeeEntity.getPassword();
+        String oldPassword = employeeEntity.get().getPassword();
         if (!oldPassword.equals(request.oldPassword())) {
             throw new AuthenticationException("Invalid password");
         }
