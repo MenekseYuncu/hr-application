@@ -4,7 +4,7 @@ import com.violet.hrapplication.approvals.model.entity.LeaveRequestEntity;
 
 import java.util.List;
 
-public interface PermissionRepository {
+public interface LeaveRequestRepository {
 
     List<LeaveRequestEntity> findAll();
 

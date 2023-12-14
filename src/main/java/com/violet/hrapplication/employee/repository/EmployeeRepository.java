@@ -9,7 +9,7 @@ public interface EmployeeRepository {
 
     List<EmployeeEntity> findAll();
 
-    EmployeeEntity findById(String id);
+    Optional<EmployeeEntity> findById(String id);
 
     Optional<EmployeeEntity> findByEmail(String email);
 

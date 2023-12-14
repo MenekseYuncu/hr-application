@@ -8,8 +8,8 @@ import com.violet.hrapplication.approvals.controller.request.CreateLeaveRequest;
 import com.violet.hrapplication.approvals.controller.request.UpdateLeaveRequest;
 import com.violet.hrapplication.approvals.model.domain.LeaveRequest;
 import com.violet.hrapplication.approvals.model.entity.LeaveRequestEntity;
-import com.violet.hrapplication.approvals.repository.PermissionRepository;
-import com.violet.hrapplication.approvals.service.PermissionService;
+import com.violet.hrapplication.approvals.repository.LeaveRequestRepository;
+import com.violet.hrapplication.approvals.service.LeaveRequestService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-class PermissionServiceImpl implements PermissionService {
+class LeaveRequestServiceImpl implements LeaveRequestService {
 
-    private final PermissionRepository permissionRepository;
+    private final LeaveRequestRepository leaveRequestRepository;
     private final EmployeeRepository employeeRepository;
 
-    PermissionServiceImpl(PermissionRepository permissionRepository, EmployeeRepository employeeRepository) {
-        this.permissionRepository = permissionRepository;
+    LeaveRequestServiceImpl(LeaveRequestRepository leaveRequestRepository, EmployeeRepository employeeRepository) {
+        this.leaveRequestRepository = leaveRequestRepository;
         this.employeeRepository = employeeRepository;
     }
 
     @Override
     public List<LeaveRequestResponse> getAllLeaves() {
-        List<LeaveRequestEntity> leaveRequestEntities = permissionRepository.findAll();
+        List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAll();
         return leaveRequestEntities.stream()
                 .map(leaveRequestEntity -> new LeaveRequestResponse(
                         leaveRequestEntity.getStartDate(),
@@ -43,7 +43,7 @@ class PermissionServiceImpl implements PermissionService {
         if (employeeRepository.findById(employeeId) == null) {
             throw new UserNotFoundException("User not found");
         }
-        List<LeaveRequestEntity> leaveRequestEntities = permissionRepository.findByEmployeeId(employeeId);
+        List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findByEmployeeId(employeeId);
         return leaveRequestEntities.stream()
                 .map(leaveEntity -> new LeaveResponse(
                         leaveEntity.getStartDate(),
@@ -65,12 +65,12 @@ class PermissionServiceImpl implements PermissionService {
         leave.setCreator(createLeaveRequest.creator());
         leave.setCreationTime(LocalDateTime.now());
 
-        permissionRepository.save(leave.toLeaveRequest());
+        leaveRequestRepository.save(leave.toLeaveRequest());
     }
 
     @Override
     public void update(String id, UpdateLeaveRequest updateLeaveRequest) throws UserNotFoundException {
-        LeaveRequestEntity leaveRequestEntity = permissionRepository.findById(id);
+        LeaveRequestEntity leaveRequestEntity = leaveRequestRepository.findById(id);
 
         if (leaveRequestEntity == null) {
             return;
@@ -80,7 +80,7 @@ class PermissionServiceImpl implements PermissionService {
                 updateLeaveRequest.startDate(),
                 updateLeaveRequest.endDate()
         );
-        permissionRepository.update(leaveRequestEntity);
+        leaveRequestRepository.update(leaveRequestEntity);
 
     }
 }

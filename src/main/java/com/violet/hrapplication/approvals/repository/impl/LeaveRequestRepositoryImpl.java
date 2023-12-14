@@ -1,7 +1,7 @@
 package com.violet.hrapplication.approvals.repository.impl;
 
 import com.violet.hrapplication.approvals.model.entity.LeaveRequestEntity;
-import com.violet.hrapplication.approvals.repository.PermissionRepository;
+import com.violet.hrapplication.approvals.repository.LeaveRequestRepository;
 import com.violet.hrapplication.approvals.repository.mapping.LeaveRequestMapping;
 import com.violet.hrapplication.approvals.repository.script.LeaveRequestScripts;
 import org.springframework.stereotype.Repository;
@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-class PermissionRepositoryImpl implements PermissionRepository {
+class LeaveRequestRepositoryImpl implements LeaveRequestRepository {
 
     private final Sql2o sql2o;
 
-    public PermissionRepositoryImpl(Sql2o sql2o) {
+    public LeaveRequestRepositoryImpl(Sql2o sql2o) {
         this.sql2o = sql2o;
     }
 

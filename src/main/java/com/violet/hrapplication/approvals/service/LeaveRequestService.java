@@ -8,7 +8,7 @@ import com.violet.hrapplication.approvals.controller.request.UpdateLeaveRequest;
 
 import java.util.List;
 
-public interface PermissionService {
+public interface LeaveRequestService {
 
     List<LeaveResponse> getLeaves(String employeeId);
 

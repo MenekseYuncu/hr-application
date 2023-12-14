@@ -36,12 +36,12 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
 
     @Override
-    public EmployeeEntity findById(String id) {
+    public Optional<EmployeeEntity> findById(String id) {
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_ID)) {
-            return query
+            return Optional.ofNullable(query
                     .addParameter(EmployeeMapping.ID.getPropertyName(), id)
                     .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
-                    .executeAndFetchFirst(EmployeeEntity.class);
+                    .executeAndFetchFirst(EmployeeEntity.class));
         }
     }
 

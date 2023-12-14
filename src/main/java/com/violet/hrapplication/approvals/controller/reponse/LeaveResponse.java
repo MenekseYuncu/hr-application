@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 public class LeaveResponse {
 
+    public LeaveResponse() {
+    }
+
     private LocalDate startDate;
     private LocalDate endDate;
     private String leaveTypeId;
@@ -12,5 +15,26 @@ public class LeaveResponse {
         this.startDate = startDate;
         this.endDate = endDate;
         this.leaveTypeId = leaveTypeId;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public String getLeaveTypeId() {
+        return leaveTypeId;
+    }
+
+    @Override
+    public String toString() {
+        return "LeaveResponse{" +
+                "startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", leaveTypeId='" + leaveTypeId + '\'' +
+                '}';
     }
 }
