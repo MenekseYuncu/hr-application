@@ -86,7 +86,9 @@ class EmployeeServiceImpl implements EmployeeService {
 
     private String generateUsername(Employee employee) {
         int uniques = 1000 + EmployeeServiceImpl.random.nextInt(9000);
-        return employee.getFirstName().toLowerCase() + "-" + employee.getLastName().toLowerCase() + "-" + uniques;
+        String[] names = employee.getFirstName().split("\\s+");
+        String firstName = names[0].toLowerCase(); // Sadece ilk ismi al
+        return firstName + "-" + employee.getLastName().toLowerCase() + "-" + uniques;
     }
 
     public void update(String id, UpdateEmployeeRequest request) {
