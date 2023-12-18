@@ -1,7 +1,11 @@
 CREATE DATABASE IF NOT EXISTS `hr-app` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `hr-app`;
 
-CREATE USER 'hr_app'@'localhost' IDENTIFIED BY 'hr_app';
+
+CREATE USER 'hrapp'@'localhost' IDENTIFIED BY 'hrappPassword';
+
+GRANT ALL PRIVILEGES ON hr_app.* TO 'hrapp'@'localhost';
+FLUSH PRIVILEGES;
 
 DROP TABLE IF EXISTS `EMPLOYEE`;
 DROP TABLE IF EXISTS `LEAVE_TYPE`;
@@ -74,7 +78,7 @@ VALUES (UUID(),
         '2020-01-01',
         '2020-01-02',
         'c2cd7234-9674-11ee-94d3-fc3497dcdce8',
-        'PENDING',
+        'APPROVED',
         'violet',
         NOW());
 

@@ -1,11 +1,12 @@
 CREATE DATABASE IF NOT EXISTS `hr-app` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `hr-app`;
 
-CREATE USER 'hr_app'@'localhost' IDENTIFIED BY 'hr_app';
-
 DROP TABLE IF EXISTS `EMPLOYEE`;
 DROP TABLE IF EXISTS `LEAVE_TYPE`;
 DROP TABLE IF EXISTS `LEAVE_REQUEST`;
+
+SET @mailUsername := 'hrapp@gmail.com';
+SET @mailPassword := 'application123';
 
 CREATE TABLE EMPLOYEE
 (

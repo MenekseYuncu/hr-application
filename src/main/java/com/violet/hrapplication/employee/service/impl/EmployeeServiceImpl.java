@@ -70,6 +70,8 @@ class EmployeeServiceImpl implements EmployeeService {
         isUsernameUniqueExists(employee);
 
         employeeRepository.save(employee.toEmployee());
+
+
     }
 
     private void isUsernameUniqueExists(Employee employee) {
@@ -87,7 +89,7 @@ class EmployeeServiceImpl implements EmployeeService {
     private String generateUsername(Employee employee) {
         int uniques = 1000 + EmployeeServiceImpl.random.nextInt(9000);
         String[] names = employee.getFirstName().split("\\s+");
-        String firstName = names[0].toLowerCase(); // Sadece ilk ismi al
+        String firstName = names[0].toLowerCase();
         return firstName + "-" + employee.getLastName().toLowerCase() + "-" + uniques;
     }
 

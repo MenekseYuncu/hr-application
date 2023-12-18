@@ -49,23 +49,20 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
     @Override
     public Optional<EmployeeEntity> findByUsername(String username) {
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_USERNAME)) {
-            EmployeeEntity result = query
+            return Optional.ofNullable(query
                     .addParameter(EmployeeMapping.USERNAME.getPropertyName(), username)
                     .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
-                    .executeAndFetchFirst(EmployeeEntity.class);
-
-            return Optional.ofNullable(result);
+                    .executeAndFetchFirst(EmployeeEntity.class));
         }
     }
 
     @Override
     public Optional<EmployeeEntity> findByEmail(String email) {
         try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_EMAIL)) {
-            EmployeeEntity result = query
+            return Optional.ofNullable(query
                     .addParameter(EmployeeMapping.EMAIL.getPropertyName(), email)
                     .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
-                    .executeAndFetchFirst(EmployeeEntity.class);
-            return Optional.ofNullable(result);
+                    .executeAndFetchFirst(EmployeeEntity.class));
         }
     }
 
