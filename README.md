@@ -1,6 +1,6 @@
 # Human Resources Application
 
-This is a simple Human Resources (HR) application developed using Spring Boot.
+This is a Human Resources (HR) application developed using Spring Boot.
 
 ## Features
 
