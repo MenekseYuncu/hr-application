@@ -46,3 +46,6 @@ This is a Human Resources (HR) application developed using Spring Boot.
    ./mvnw spring-boot:run
 ```
 - The application will start on http://localhost:8080.
+
+## POSTMAN COLLECTİON 
+https://documenter.getpostman.com/view/24190370/2s9YkrcL2h
