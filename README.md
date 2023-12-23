@@ -5,8 +5,10 @@ This is a Human Resources (HR) application developed using Spring Boot.
 ## Features
 
 - **Employee Management**
-  - Add, update, and delete employee information.
+  - Add, update, and delete employee, leave-type and leave-rquest information.
   - Send username and password information to employees via email.
+  - Send message for administrators approval.
+  - Sending congratulatory messages to employees on their birthdays.
 
 ## Technologies Used
 
@@ -44,3 +46,6 @@ This is a Human Resources (HR) application developed using Spring Boot.
    ./mvnw spring-boot:run
 ```
 - The application will start on http://localhost:8080.
+
+## POSTMAN COLLECTİON 
+https://documenter.getpostman.com/view/24190370/2s9YkrcL2h
