@@ -8,6 +8,7 @@ import com.violet.hrapplication.employee.model.domain.Employee;
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import com.violet.hrapplication.employee.service.EmployeeService;
+import com.violet.hrapplication.employee.service.EmployeeWithEmailService;
 import com.violet.hrapplication.exception.AuthenticationException;
 import com.violet.hrapplication.exception.UserNameAlreadyExists;
 import com.violet.hrapplication.exception.UserNotFoundException;
@@ -24,10 +25,12 @@ import java.util.UUID;
 @Service
 class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final EmployeeWithEmailService emailService;
     private static final Random random = new Random();
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeWithEmailService emailService) {
         this.employeeRepository = employeeRepository;
+        this.emailService = emailService;
     }
 
 
@@ -69,9 +72,8 @@ class EmployeeServiceImpl implements EmployeeService {
 
         isUsernameUniqueExists(employee);
 
+        emailService.sendUsernameAndPasswordInformation(employee.toEmployee());
         employeeRepository.save(employee.toEmployee());
-
-
     }
 
     private void isUsernameUniqueExists(Employee employee) {

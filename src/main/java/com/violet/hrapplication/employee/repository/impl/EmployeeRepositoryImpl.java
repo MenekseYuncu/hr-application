@@ -9,6 +9,7 @@ import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +54,16 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
                     .addParameter(EmployeeMapping.USERNAME.getPropertyName(), username)
                     .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
                     .executeAndFetchFirst(EmployeeEntity.class));
+        }
+    }
+
+    @Override
+    public List<EmployeeEntity> findByBirthDate(LocalDate birthday) {
+        try (Connection con = sql2o.open(); Query query = con.createQuery(EmployeeScripts.FIND_BY_BIRTHDAY)) {
+            return query
+                    .addParameter(EmployeeMapping.BIRTHDAY.getPropertyName(), birthday)
+                    .setColumnMappings(EmployeeMapping.COLUMN_MAPPING)
+                    .executeAndFetch(EmployeeEntity.class);
         }
     }
 

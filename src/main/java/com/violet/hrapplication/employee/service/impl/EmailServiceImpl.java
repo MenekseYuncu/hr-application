@@ -18,7 +18,7 @@ class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void send(String mail, String subject, String context) throws EmailServiceException {
+    public void send(String mail, String subject, String context) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         try {
@@ -26,10 +26,10 @@ class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setTo(mail);
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(context);
-            javaMailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            throw new EmailServiceException("Error sending email", e);
+            throw new EmailServiceException(e);
         }
+        javaMailSender.send(mimeMessage);
     }
 }

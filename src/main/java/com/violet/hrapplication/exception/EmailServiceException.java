@@ -1,12 +1,14 @@
 package com.violet.hrapplication.exception;
 
-public class EmailServiceException extends Exception {
+import jakarta.mail.MessagingException;
+
+public class EmailServiceException extends RuntimeException {
 
     public EmailServiceException(String message) {
         super(message);
     }
 
-    public EmailServiceException(String message, Throwable cause) {
-        super(message, cause);
+    public EmailServiceException(MessagingException messagingException){
+        super(messagingException.getMessage());
     }
 }

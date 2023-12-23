@@ -1,14 +1,14 @@
 db:
   url: jdbc:mysql://localhost:3306/hr-app
-  username: hrapp
-  password: hrappPassword
+  username: root
+  password: password123
 
 spring:
   mail:
     default-encoding: UTF-8
     host: smtp.gmail.com
-    username: '@mailUsername@'
-    password: '@mailPassword@'
+    username: @mailUsername
+    password: @mailPassword
     port: 587
     properties:
       mail:
