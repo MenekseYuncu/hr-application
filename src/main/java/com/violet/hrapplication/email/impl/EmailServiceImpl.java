@@ -1,6 +1,6 @@
-package com.violet.hrapplication.employee.service.impl;
+package com.violet.hrapplication.email.impl;
 
-import com.violet.hrapplication.employee.service.EmailService;
+import com.violet.hrapplication.email.EmailService;
 import com.violet.hrapplication.exception.EmailServiceException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -18,14 +18,14 @@ class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void send(String mail, String subject, String context) {
+    public void send(String mail, String subject, String content) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setTo(mail);
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(context);
+            mimeMessageHelper.setText(content);
 
         } catch (MessagingException e) {
             throw new EmailServiceException(e);

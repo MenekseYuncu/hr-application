@@ -8,7 +8,7 @@ import com.violet.hrapplication.employee.model.domain.Employee;
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import com.violet.hrapplication.employee.service.EmployeeService;
-import com.violet.hrapplication.employee.service.EmployeeWithEmailService;
+import com.violet.hrapplication.email.EmployeeWithEmailService;
 import com.violet.hrapplication.exception.AuthenticationException;
 import com.violet.hrapplication.exception.UserNameAlreadyExists;
 import com.violet.hrapplication.exception.UserNotFoundException;
@@ -24,6 +24,7 @@ import java.util.UUID;
 
 @Service
 class EmployeeServiceImpl implements EmployeeService {
+
     private final EmployeeRepository employeeRepository;
     private final EmployeeWithEmailService emailService;
     private static final Random random = new Random();
@@ -54,7 +55,6 @@ class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void create(CreateEmployeeRequest request) {
-
         Employee employee = new Employee();
         employee.setId(UUID.randomUUID().toString());
         employee.setFirstName(request.firstName());
@@ -67,6 +67,8 @@ class EmployeeServiceImpl implements EmployeeService {
         employee.setCreator(request.creator());
         employee.setCreationTime(LocalDateTime.now());
 
+        validateUniqueEmail(employee.getEmail());
+
         employee.setUsername(generateUsername(employee));
         employee.setPassword(RandomStringUtils.random(9, false, true));
 
@@ -75,6 +77,7 @@ class EmployeeServiceImpl implements EmployeeService {
         emailService.sendUsernameAndPasswordInformation(employee.toEmployee());
         employeeRepository.save(employee.toEmployee());
     }
+
 
     private void isUsernameUniqueExists(Employee employee) {
         for (int attempt = 0; attempt < 3; attempt++) {
@@ -114,7 +117,7 @@ class EmployeeServiceImpl implements EmployeeService {
 
     private void validateUniqueEmail(String email) {
         if (employeeRepository.findByEmail(email).isPresent()) {
-            throw new UserNotFoundException("Email already exists");
+            throw new UserNameAlreadyExists();
         }
     }
 

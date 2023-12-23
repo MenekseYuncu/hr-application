@@ -1,6 +1,7 @@
 package com.violet.hrapplication.approvals.controller.request;
 
 import com.violet.hrapplication.approvals.model.enums.State;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,8 +14,10 @@ public record CreateLeaveRequest(
         @NotEmpty
         String employeeId,
         @NotNull
+        @Future
         LocalDate startDate,
         @NotNull
+        @Future
         LocalDate endDate,
         @NotEmpty
         String leaveTypeId,
