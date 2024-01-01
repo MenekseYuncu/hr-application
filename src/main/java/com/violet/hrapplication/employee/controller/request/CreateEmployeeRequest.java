@@ -11,13 +11,17 @@ import java.util.EnumSet;
 public record CreateEmployeeRequest(
 
         @NotBlank
-        @Size(min = 2, max = 100)
+        @Size(min = 2, max = 50)
         String firstName,
         @NotBlank
+        @Size(min = 2, max = 50)
         String lastName,
         @Email
+        @NotBlank
+        @Size(min = 2, max = 100)
         String email,
         @Past
+        @NotNull
         LocalDate birthday,
         Role role,
         Gender gender,

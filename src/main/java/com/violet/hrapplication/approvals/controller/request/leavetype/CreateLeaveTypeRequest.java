@@ -1,4 +1,4 @@
-package com.violet.hrapplication.approvals.controller.request;
+package com.violet.hrapplication.approvals.controller.request.leavetype;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,11 +10,9 @@ public record CreateLeaveTypeRequest(
         @NotBlank
         @Size(min = 2, max = 50)
         String name,
-
         @NotNull
         @Range(min = 1, max = 50)
         Integer maxDays,
-
         @NotBlank
         String creator
 ) {

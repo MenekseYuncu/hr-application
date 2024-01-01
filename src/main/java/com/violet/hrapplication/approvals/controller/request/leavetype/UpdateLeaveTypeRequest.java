@@ -1,4 +1,4 @@
-package com.violet.hrapplication.approvals.controller.request;
+package com.violet.hrapplication.approvals.controller.request.leavetype;
 
 import jakarta.validation.constraints.NotBlank;
 

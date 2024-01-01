@@ -19,6 +19,7 @@ public record UpdateEmployeeRequest(
         String lastName,
         @Email
         @NotBlank
+        @Size(min = 2, max = 50)
         String email,
         Gender gender
 ) {
