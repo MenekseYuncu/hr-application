@@ -4,6 +4,7 @@ import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import com.violet.hrapplication.employee.repository.mapping.EmployeeMapping;
 import com.violet.hrapplication.employee.repository.script.EmployeeScripts;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -22,6 +23,10 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
 
     public EmployeeRepositoryImpl(Sql2o sql2o) {
         this.sql2o = sql2o;
+    }
+
+    private String hashPassword(String plainPassword) {
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt());
     }
 
 
@@ -93,7 +98,7 @@ class EmployeeRepositoryImpl implements EmployeeRepository {
                     .addParameter(EmployeeMapping.CREATOR.getPropertyName(), employeeEntity.getCreator())
                     .addParameter(EmployeeMapping.CREATION_TIME.getPropertyName(), employeeEntity.getCreationTime())
                     .addParameter(EmployeeMapping.USERNAME.getPropertyName(), employeeEntity.getUsername())
-                    .addParameter(EmployeeMapping.PASSWORD.getPropertyName(), employeeEntity.getPassword())
+                    .addParameter(EmployeeMapping.PASSWORD.getPropertyName(), hashPassword(employeeEntity.getPassword()))
                     .executeUpdate();
         }
     }

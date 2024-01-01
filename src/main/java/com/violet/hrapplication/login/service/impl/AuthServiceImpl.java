@@ -5,6 +5,7 @@ import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import com.violet.hrapplication.exception.AuthenticationException;
 import com.violet.hrapplication.login.request.LoginRequest;
 import com.violet.hrapplication.login.service.AuthService;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,11 +22,12 @@ class AuthServiceImpl implements AuthService {
     @Override
     public String login(LoginRequest loginRequest) throws AuthenticationException {
 
-        Optional<EmployeeEntity> employee = employeeRepository.findByUsername(loginRequest.username());
+        Optional<EmployeeEntity> employeeEntity = employeeRepository.findByUsername(loginRequest.username());
 
-        if (employee.isEmpty() || !employee.get().getPassword().equals(loginRequest.password())) {
-            throw new AuthenticationException("Invalid username or password");
+        if (employeeEntity.isEmpty() || !BCrypt.checkpw(loginRequest.password(), employeeEntity.get().getPassword())) {
+            throw new AuthenticationException("Geçersiz kullanıcı adı veya şifre");
         }
+
 
         return "Login successful";
     }
