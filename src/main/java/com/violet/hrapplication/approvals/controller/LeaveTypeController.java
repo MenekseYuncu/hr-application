@@ -1,7 +1,7 @@
 package com.violet.hrapplication.approvals.controller;
 
-import com.violet.hrapplication.approvals.controller.request.CreateLeaveTypeRequest;
-import com.violet.hrapplication.approvals.controller.request.UpdateLeaveTypeRequest;
+import com.violet.hrapplication.approvals.controller.request.leavetype.CreateLeaveTypeRequest;
+import com.violet.hrapplication.approvals.controller.request.leavetype.UpdateLeaveTypeRequest;
 import com.violet.hrapplication.approvals.service.LeaveTypeService;
 import jakarta.validation.Valid;
 import org.hibernate.validator.constraints.UUID;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequestMapping("/api/leave-type")
-public class LeaveTypeController {
+class LeaveTypeController {
 
     private final LeaveTypeService leaveTypeService;
 

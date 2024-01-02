@@ -48,7 +48,7 @@ CREATE TABLE LEAVE_TYPE
 
 INSERT INTO LEAVE_TYPE
 VALUES ('c2cd7234-9674-11ee-94d3-fc3497dcdce8',
-        'Annual Leave',
+        'Annual LeaveRequestNotFoundException',
         12,
         'violet',
         NOW());
@@ -77,4 +77,3 @@ VALUES (UUID(),
         'APPROVED',
         'violet',
         NOW());
-

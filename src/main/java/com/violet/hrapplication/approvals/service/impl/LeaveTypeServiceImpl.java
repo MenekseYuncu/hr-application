@@ -1,7 +1,7 @@
 package com.violet.hrapplication.approvals.service.impl;
 
-import com.violet.hrapplication.approvals.controller.request.CreateLeaveTypeRequest;
-import com.violet.hrapplication.approvals.controller.request.UpdateLeaveTypeRequest;
+import com.violet.hrapplication.approvals.controller.request.leavetype.CreateLeaveTypeRequest;
+import com.violet.hrapplication.approvals.controller.request.leavetype.UpdateLeaveTypeRequest;
 import com.violet.hrapplication.approvals.model.domain.LeaveType;
 import com.violet.hrapplication.approvals.model.entity.LeaveTypeEntity;
 import com.violet.hrapplication.approvals.repository.LeaveTypeRepository;
@@ -52,7 +52,7 @@ class LeaveTypeServiceImpl implements LeaveTypeService {
     public void delete(String id) {
         LeaveTypeEntity leaveType = leaveTypeRepository.findById(id);
         if (leaveType == null) {
-            throw new IllegalArgumentException("Leave type not found");
+            throw new IllegalArgumentException("LeaveRequestNotFoundException type not found");
         }
         leaveTypeRepository.delete(id);
     }

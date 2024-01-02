@@ -1,7 +1,7 @@
 package com.violet.hrapplication.approvals.service;
 
-import com.violet.hrapplication.approvals.controller.request.CreateLeaveTypeRequest;
-import com.violet.hrapplication.approvals.controller.request.UpdateLeaveTypeRequest;
+import com.violet.hrapplication.approvals.controller.request.leavetype.CreateLeaveTypeRequest;
+import com.violet.hrapplication.approvals.controller.request.leavetype.UpdateLeaveTypeRequest;
 
 public interface LeaveTypeService {
 
