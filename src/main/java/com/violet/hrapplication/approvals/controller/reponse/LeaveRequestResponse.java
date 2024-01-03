@@ -31,36 +31,12 @@ public class LeaveRequestResponse {
         this.id = id;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
     public State getState() {
         return state;
     }
 
     public void setState(State state) {
         this.state = state;
-    }
-
-    public String getLeaveTypeId() {
-        return leaveTypeId;
-    }
-
-    public void setLeaveTypeId(String leaveTypeId) {
-        this.leaveTypeId = leaveTypeId;
     }
 
     @Override
@@ -70,10 +46,9 @@ public class LeaveRequestResponse {
                 ",\"startDate\":\"" + startDate + '\"' +
                 ",\"endDate\":\"" + endDate + '\"' +
                 ",\"state\":\"" + state + '\"' +
-                ",\"leaveType\":{" +
+                ",\"leaveType\":[" +
                 "\"leaveTypeId\":\"" + leaveTypeId + '\"' +
-                "}" +
+                "]" +
                 '}';
     }
-
 }

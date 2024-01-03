@@ -1,6 +1,7 @@
 package com.violet.hrapplication.approvals.model.entity;
 
 
+import com.violet.hrapplication.approvals.model.domain.LeaveRequest;
 import com.violet.hrapplication.approvals.model.enums.State;
 
 import java.time.LocalDate;
@@ -28,10 +29,21 @@ public class LeaveRequestEntity {
         this.creationTime = creationTime;
     }
 
-    public void update(LocalDate startDate,
-                       LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public LeaveRequest toLeaveRequest() {
+        LeaveRequest leaveRequest = new LeaveRequest();
+        leaveRequest.setId(this.getId());
+        leaveRequest.setEmployeeId(this.getEmployeeId());
+        leaveRequest.setStartDate(this.getStartDate());
+        leaveRequest.setEndDate(this.getEndDate());
+        leaveRequest.setLeaveTypeId(this.getLeaveTypeId());
+        leaveRequest.setState(this.getState());
+        leaveRequest.setCreator(this.getCreator());
+        leaveRequest.setCreationTime(this.getCreationTime());
+        return leaveRequest;
+    }
+
+    public void update(State state) {
+        this.state = state;
     }
 
     public String getId() {
