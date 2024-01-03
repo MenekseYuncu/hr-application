@@ -1,8 +1,9 @@
 package com.violet.hrapplication.email.impl;
 
 import com.violet.hrapplication.approvals.model.domain.LeaveRequest;
+import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.email.EmailService;
-import com.violet.hrapplication.email.EmployeeWithEmailService;
+import com.violet.hrapplication.email.EmployeeEmailService;
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
 import com.violet.hrapplication.employee.repository.EmployeeRepository;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,15 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-class EmployeeWithEmailServiceImpl implements EmployeeWithEmailService {
+class EmployeeEmailServiceImpl implements EmployeeEmailService {
 
     private final EmployeeRepository employeeRepository;
     private final EmailService emailService;
 
-    EmployeeWithEmailServiceImpl(EmployeeRepository employeeRepository, EmailService emailService) {
+    EmployeeEmailServiceImpl(EmployeeRepository employeeRepository, EmailService emailService) {
         this.employeeRepository = employeeRepository;
         this.emailService = emailService;
     }
@@ -53,27 +53,18 @@ class EmployeeWithEmailServiceImpl implements EmployeeWithEmailService {
     }
 
     @Override
-    public void sendLeaveRequestApprovalMail(LeaveRequest leave, String approveId) {
-        Optional<EmployeeEntity> approve = employeeRepository.findById(approveId);
+    public void sendLeaveRequestStatusChange(LeaveRequest leave, String employeeEmail) {
+        String subject = leave.getState() == State.APPROVED ? "Leave Request Approved"
+                : "Leave Request Rejected";
+        String content = "Dear Employee, \n\n" +
+                "Your leave request has been " + leave.getState().toString().toLowerCase() + ".\n\n" +
+                "Leave Details:\n" +
+                "Start Date: " + leave.getStartDate() + "\n" +
+                "End Date: " + leave.getEndDate() + "\n" +
+                "Leave Type: " + leave.getLeaveTypeId() + "\n\n" +
+                "Best regards,\n" +
+                "[Castilla of Developer]";
 
-        if (approve.isPresent()) {
-            String approverEmail = approve.get().getEmail();
-            if (approverEmail == null) {
-                return;
-            }
-
-            String subject = "Leave Request Approval";
-            String content = "Dear Manager, \n\n" +
-                    "A leave request has been submitted and requires your approval.\n" +
-                    "Please log in to the system to review and take action.\n\n" +
-                    "Leave Details:\n" +
-                    "Start Date: " + leave.getStartDate() + "\n" +
-                    "End Date: " + leave.getEndDate() + "\n" +
-                    "Leave Type: " + leave.getLeaveTypeId() + "\n\n" +
-                    "Best regards,\n" +
-                    "[Your Company Name]";
-
-            emailService.send(approverEmail, subject, content);
-        }
+        emailService.send(employeeEmail, subject, content);
     }
 }
