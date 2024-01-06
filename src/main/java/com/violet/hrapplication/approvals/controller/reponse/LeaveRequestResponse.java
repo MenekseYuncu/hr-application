@@ -31,6 +31,22 @@ public class LeaveRequestResponse {
         this.id = id;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
     public State getState() {
         return state;
     }
@@ -39,16 +55,12 @@ public class LeaveRequestResponse {
         this.state = state;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                "\"id\":\"" + id + '\"' +
-                ",\"startDate\":\"" + startDate + '\"' +
-                ",\"endDate\":\"" + endDate + '\"' +
-                ",\"state\":\"" + state + '\"' +
-                ",\"leaveType\":[" +
-                "\"leaveTypeId\":\"" + leaveTypeId + '\"' +
-                "]" +
-                '}';
+    public String getLeaveTypeId() {
+        return leaveTypeId;
     }
+
+    public void setLeaveTypeId(String leaveTypeId) {
+        this.leaveTypeId = leaveTypeId;
+    }
+
 }

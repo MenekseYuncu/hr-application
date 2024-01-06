@@ -38,11 +38,11 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public List<LeaveRequestResponse> getAllLeaves(PaginationRequest paginationRequest, FilterByStateRequest filterByStateRequest) {
-        int page = paginationRequest.page();
-        int size = paginationRequest.size();
+    public List<LeaveRequestResponse> getAllLeaves(PaginationRequest pagination, FilterByStateRequest filter) {
+        int page = pagination.page();
+        int size = pagination.size();
 
-        if (filterByStateRequest == null || filterByStateRequest.state() == null) {
+        if (filter == null || filter.state() == null) {
             return leaveRequestRepository.findAll((page - 1) * size, size).stream()
                     .map(leaveRequestEntity -> new LeaveRequestResponse(
                             leaveRequestEntity.getId(),
@@ -53,7 +53,7 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
                     .toList();
         } else {
             
-            State state = filterByStateRequest.state();
+            State state = filter.state();
             return leaveRequestRepository.findByState(state).stream()
                     .map(leaveRequestEntity -> new LeaveRequestResponse(
                             leaveRequestEntity.getId(),
@@ -109,14 +109,21 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
 
     @Override
     public List<LeaveRequestResponse> getLeavesByState(State state, PaginationRequest paginationRequest) {
-        List<LeaveRequestEntity> leaveEntities = leaveRequestRepository.findByState(state );
-        return mapLeaveEntitiesToResponses(leaveEntities);
+        List<LeaveRequestEntity> leaveEntities = leaveRequestRepository.findByState(state);
+        return leaveEntities.stream()
+                .map(leaveEntity -> new LeaveRequestResponse(
+                        leaveEntity.getId(),
+                        leaveEntity.getStartDate(),
+                        leaveEntity.getEndDate(),
+                        leaveEntity.getState(),
+                        leaveEntity.getLeaveTypeId()))
+                .toList();
     }
+
 
     @Override
     public List<LeaveResponse> getLeaveRequestsForDate() {
         List<LeaveRequestEntity> leaveEntities = leaveRequestRepository.findByStateAndDate(LocalDate.now());
-
         return leaveEntities.stream()
                 .map(leaveEntity -> new LeaveResponse(
                         leaveEntity.getId(),
@@ -130,21 +137,6 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
                 .toList();
     }
 
-    private List<LeaveRequestResponse> mapLeaveEntitiesToResponses(List<LeaveRequestEntity> leaveEntities) {
-        return leaveEntities.stream()
-                .map(this::mapLeaveEntityToResponse)
-                .toList();
-    }
-
-    private LeaveRequestResponse mapLeaveEntityToResponse(LeaveRequestEntity leaveEntity) {
-        return new LeaveRequestResponse(
-                leaveEntity.getId(),
-                leaveEntity.getStartDate(),
-                leaveEntity.getEndDate(),
-                leaveEntity.getState(),
-                leaveEntity.getLeaveTypeId()
-        );
-    }
     @Override
     public void create(CreateLeaveRequest createLeaveRequest) throws UserNotFoundException {
 
