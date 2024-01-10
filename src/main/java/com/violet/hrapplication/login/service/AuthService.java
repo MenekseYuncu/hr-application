@@ -5,6 +5,6 @@ import com.violet.hrapplication.login.request.LoginRequest;
 
 public interface AuthService {
 
-    String login(LoginRequest loginRequest) throws AuthenticationException;
+    void login(LoginRequest loginRequest) throws AuthenticationException;
 
 }

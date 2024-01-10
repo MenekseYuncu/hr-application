@@ -20,15 +20,11 @@ class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(LoginRequest loginRequest) throws AuthenticationException {
-
+    public void login(LoginRequest loginRequest) throws AuthenticationException {
         Optional<EmployeeEntity> employeeEntity = employeeRepository.findByUsername(loginRequest.username());
 
         if (employeeEntity.isEmpty() || !BCrypt.checkpw(loginRequest.password(), employeeEntity.get().getPassword())) {
             throw new AuthenticationException("Geçersiz kullanıcı adı veya şifre");
         }
-
-
-        return "Login successful";
     }
 }
