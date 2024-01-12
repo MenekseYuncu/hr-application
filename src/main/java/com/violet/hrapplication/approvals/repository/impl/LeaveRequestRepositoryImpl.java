@@ -1,5 +1,6 @@
 package com.violet.hrapplication.approvals.repository.impl;
 
+import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
 import com.violet.hrapplication.approvals.model.entity.LeaveRequestEntity;
 import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.approvals.repository.LeaveRequestRepository;
@@ -25,11 +26,16 @@ class LeaveRequestRepositoryImpl implements LeaveRequestRepository {
     }
 
     @Override
-    public List<LeaveRequestEntity> findAll(Integer page, Integer size) {
+    public List<LeaveRequestEntity> findAll(Integer page, Integer size, PaginationAndFilter.FilterState filter) {
+        State state = null;
+        if (filter != null && filter.getState() != null) {
+            state = filter.getState();
+        }
         try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_ALL)) {
             List<LeaveRequestEntity> result = query
+                    .addParameter("offset", (page - 1) * size)
                     .addParameter("limit", size)
-                    .addParameter("offset", page )
+                    .addParameter("state", state)
                     .setColumnMappings(LeaveRequestMapping.COLUMN_MAPPING)
                     .executeAndFetch(LeaveRequestEntity.class);
             return Objects.requireNonNullElse(result, Collections.emptyList());
@@ -47,25 +53,31 @@ class LeaveRequestRepositoryImpl implements LeaveRequestRepository {
     }
 
     @Override
-    public List<LeaveRequestEntity> findByEmployeeId(String employeeId, Integer page, Integer size) {
+    public List<LeaveRequestEntity> findByEmployeeId(String employeeId, Integer page, Integer size, PaginationAndFilter.FilterState filter) {
+        State state = null;
+        if (filter != null && filter.getState() != null) {
+            state = filter.getState();
+        }
         try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_BY_EMPLOYEE_ID)) {
             return query
                     .addParameter(LeaveRequestMapping.EMPLOYEE_ID.getPropertyName(), employeeId)
+                    .addParameter("offset", (page - 1) * size)
                     .addParameter("limit", size)
-                    .addParameter("offset", page)
+                    .addParameter("state", state)
                     .setColumnMappings(LeaveRequestMapping.COLUMN_MAPPING)
                     .executeAndFetch(LeaveRequestEntity.class);
         }
     }
 
     @Override
-    public List<LeaveRequestEntity> findByState(State state) {
+    public List<LeaveRequestEntity> findByState(State state, Integer page, Integer size) {
         try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_BY_STATE)) {
             return query
                     .addParameter(LeaveRequestMapping.STATE.getPropertyName(), state)
+                    .addParameter("offset", (page - 1) * size)
+                    .addParameter("limit", size)
                     .setColumnMappings(LeaveRequestMapping.COLUMN_MAPPING)
                     .executeAndFetch(LeaveRequestEntity.class);
-
         }
     }
 
@@ -115,5 +127,3 @@ class LeaveRequestRepositoryImpl implements LeaveRequestRepository {
         }
     }
 }
-
-

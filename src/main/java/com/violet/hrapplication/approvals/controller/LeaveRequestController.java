@@ -3,7 +3,7 @@ package com.violet.hrapplication.approvals.controller;
 import com.violet.hrapplication.approvals.controller.reponse.LeaveRequestResponse;
 import com.violet.hrapplication.approvals.controller.reponse.LeaveResponse;
 import com.violet.hrapplication.approvals.controller.request.CreateLeaveRequest;
-import com.violet.hrapplication.approvals.controller.request.FilterByStateRequest;
+import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
 import com.violet.hrapplication.approvals.controller.request.PaginationRequest;
 import com.violet.hrapplication.approvals.controller.request.UpdateLeaveRequest;
 import com.violet.hrapplication.approvals.model.enums.State;
@@ -11,17 +11,17 @@ import com.violet.hrapplication.approvals.service.LeaveRequestService;
 import jakarta.validation.Valid;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+@Validated
 @RestController
 @RequestMapping("/api/leave-request")
 class LeaveRequestController {
@@ -32,52 +32,39 @@ class LeaveRequestController {
         this.leaveRequestService = leaveRequestService;
     }
 
-    @GetMapping
+    @PostMapping
     public List<LeaveRequestResponse> getAllLeaves(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size,
-            @RequestParam(value = "state", required = false) State state
+            @Valid @RequestBody PaginationAndFilter paginationAndFilter
     ) {
-        PaginationRequest paginationRequest = new PaginationRequest(page, size);
-        FilterByStateRequest filterByStateRequest = new FilterByStateRequest(state);
-
-        return leaveRequestService.getAllLeaves(paginationRequest, filterByStateRequest);
+        return leaveRequestService.getAllLeaves(paginationAndFilter);
     }
 
-
-    @GetMapping("/{employeeId}")
+    @PostMapping("/{employeeId}")
     public ResponseEntity<List<LeaveResponse>> getLeavesOfUsers(
             @PathVariable @UUID String employeeId,
-            @RequestBody PaginationRequest paginationRequest,
-            @RequestBody FilterByStateRequest filterByStateRequest
+            @RequestBody @Valid PaginationAndFilter paginationAndFilter
     ) {
-        return ResponseEntity.ok(leaveRequestService.getLeaves(employeeId, paginationRequest, filterByStateRequest));
+        return ResponseEntity.ok(leaveRequestService.getLeaves(employeeId, paginationAndFilter));
     }
 
-    @GetMapping("/pending")
+    @PostMapping("/pending")
     public ResponseEntity<List<LeaveRequestResponse>> getPendingLeaves(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size
+            @Valid @RequestBody PaginationRequest paginationRequest
     ) {
-        PaginationRequest paginationRequest = new PaginationRequest(page, size);
         return ResponseEntity.ok(leaveRequestService.getLeavesByState(State.PENDING, paginationRequest));
     }
 
-    @GetMapping("/approved")
+    @PostMapping("/approved")
     public ResponseEntity<List<LeaveRequestResponse>> getApprovedLeaves(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size
+             @Valid @RequestBody PaginationRequest paginationRequest
     ) {
-        PaginationRequest paginationRequest = new PaginationRequest(page, size);
         return ResponseEntity.ok(leaveRequestService.getLeavesByState(State.APPROVED, paginationRequest));
     }
 
-    @GetMapping("/rejected")
+    @PostMapping("/rejected")
     public ResponseEntity<List<LeaveRequestResponse>> getRejectedLeaves(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size
+            @Valid @RequestBody PaginationRequest paginationRequest
     ) {
-        PaginationRequest paginationRequest = new PaginationRequest(page, size);
         return ResponseEntity.ok(leaveRequestService.getLeavesByState(State.REJECTED, paginationRequest));
     }
 
@@ -86,7 +73,7 @@ class LeaveRequestController {
         return ResponseEntity.ok(leaveRequestService.getLeaveRequestsForDate());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Void> create(
             @RequestBody @Valid CreateLeaveRequest request
     ) {

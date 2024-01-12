@@ -1,6 +1,6 @@
 package com.violet.hrapplication.approvals.service;
 
-import com.violet.hrapplication.approvals.controller.request.FilterByStateRequest;
+import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
 import com.violet.hrapplication.approvals.controller.request.PaginationRequest;
 import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.exception.UserNotFoundException;
@@ -13,13 +13,13 @@ import java.util.List;
 
 public interface LeaveRequestService {
 
-    List<LeaveResponse> getLeaves(String employeeId, PaginationRequest paginationRequest, FilterByStateRequest filterByStateRequest);
+    List<LeaveResponse> getLeaves(String employeeId, PaginationAndFilter paginationAndFilter);
 
     List<LeaveRequestResponse> getLeavesByState(State state, PaginationRequest paginationRequest);
 
     List<LeaveResponse> getLeaveRequestsForDate();
 
-    List<LeaveRequestResponse> getAllLeaves(PaginationRequest paginationRequest, FilterByStateRequest filterByStateRequest);
+    List<LeaveRequestResponse> getAllLeaves(PaginationAndFilter paginationAndFilter);
 
     void create(CreateLeaveRequest createLeaveRequest) throws UserNotFoundException;
 

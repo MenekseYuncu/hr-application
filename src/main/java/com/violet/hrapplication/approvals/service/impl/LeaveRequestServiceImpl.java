@@ -1,6 +1,6 @@
 package com.violet.hrapplication.approvals.service.impl;
 
-import com.violet.hrapplication.approvals.controller.request.FilterByStateRequest;
+import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
 import com.violet.hrapplication.approvals.controller.request.PaginationRequest;
 import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.email.EmployeeEmailService;
@@ -38,78 +38,56 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public List<LeaveRequestResponse> getAllLeaves(PaginationRequest pagination, FilterByStateRequest filter) {
-        int page = pagination.page();
-        int size = pagination.size();
+    public List<LeaveRequestResponse> getAllLeaves(PaginationAndFilter paginationAndFilter) {
 
-        if (filter == null || filter.state() == null) {
-            return leaveRequestRepository.findAll((page - 1) * size, size).stream()
-                    .map(leaveRequestEntity -> new LeaveRequestResponse(
-                            leaveRequestEntity.getId(),
-                            leaveRequestEntity.getStartDate(),
-                            leaveRequestEntity.getEndDate(),
-                            leaveRequestEntity.getState(),
-                            leaveRequestEntity.getLeaveTypeId()))
-                    .toList();
-        } else {
-            
-            State state = filter.state();
-            return leaveRequestRepository.findByState(state).stream()
-                    .map(leaveRequestEntity -> new LeaveRequestResponse(
-                            leaveRequestEntity.getId(),
-                            leaveRequestEntity.getStartDate(),
-                            leaveRequestEntity.getEndDate(),
-                            leaveRequestEntity.getState(),
-                            leaveRequestEntity.getLeaveTypeId()))
-                    .toList();
-        }
+        List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAll(
+                paginationAndFilter.getPaginationRequest().page(),
+                paginationAndFilter.getPaginationRequest().size(),
+                paginationAndFilter.getFilterState()
+        );
+        return leaveRequestEntities.stream()
+                .map(leaveRequestEntity -> new LeaveRequestResponse(
+                        leaveRequestEntity.getId(),
+                        leaveRequestEntity.getStartDate(),
+                        leaveRequestEntity.getEndDate(),
+                        leaveRequestEntity.getState(),
+                        leaveRequestEntity.getLeaveTypeId()))
+                .toList();
     }
 
-
-
     @Override
-    public List<LeaveResponse> getLeaves(String employeeId, PaginationRequest paginationRequest, FilterByStateRequest filterByStateRequest) {
+    public List<LeaveResponse> getLeaves(String employeeId, PaginationAndFilter paginationAndFilter) {
         if (employeeRepository.findById(employeeId).isEmpty()) {
             throw new UserNotFoundException("User not found");
         }
 
-        int page = paginationRequest.page();
-        int size = paginationRequest.size();
-
         List<LeaveRequestEntity> leaveEntities =
-                leaveRequestRepository.findByEmployeeId(employeeId, (page - 1) * size, size);
+                leaveRequestRepository.findByEmployeeId(
+                        employeeId,
+                        paginationAndFilter.getPaginationRequest().page(),
+                        paginationAndFilter.getPaginationRequest().size(),
+                        paginationAndFilter.getFilterState());
 
-        if (filterByStateRequest == null || filterByStateRequest.state() == null) {
-            return leaveEntities.stream()
-                    .map(leaveEntity -> new LeaveResponse(
-                            leaveEntity.getId(),
-                            leaveEntity.getEmployeeId(),
-                            leaveEntity.getStartDate(),
-                            leaveEntity.getEndDate(),
-                            leaveEntity.getState(),
-                            leaveEntity.getLeaveTypeId(),
-                            leaveEntity.getCreator(),
-                            leaveEntity.getCreationTime()))
-                    .toList();
-        }else {
-            return leaveEntities.stream()
-                    .filter(leaveEntity -> leaveEntity.getState() == filterByStateRequest.state())
-                    .map(leaveEntity -> new LeaveResponse(
-                            leaveEntity.getId(),
-                            leaveEntity.getEmployeeId(),
-                            leaveEntity.getStartDate(),
-                            leaveEntity.getEndDate(),
-                            leaveEntity.getState(),
-                            leaveEntity.getLeaveTypeId(),
-                            leaveEntity.getCreator(),
-                            leaveEntity.getCreationTime()))
-                    .toList();
-        }
+        return leaveEntities.stream()
+                .map(leaveEntity -> new LeaveResponse(
+                        leaveEntity.getId(),
+                        leaveEntity.getEmployeeId(),
+                        leaveEntity.getStartDate(),
+                        leaveEntity.getEndDate(),
+                        leaveEntity.getState(),
+                        leaveEntity.getLeaveTypeId(),
+                        leaveEntity.getCreator(),
+                        leaveEntity.getCreationTime()))
+                .toList();
     }
 
     @Override
     public List<LeaveRequestResponse> getLeavesByState(State state, PaginationRequest paginationRequest) {
-        List<LeaveRequestEntity> leaveEntities = leaveRequestRepository.findByState(state);
+        List<LeaveRequestEntity> leaveEntities = leaveRequestRepository.findByState(
+                state,
+                paginationRequest.page(),
+                paginationRequest.size()
+        );
         return leaveEntities.stream()
                 .map(leaveEntity -> new LeaveRequestResponse(
                         leaveEntity.getId(),
