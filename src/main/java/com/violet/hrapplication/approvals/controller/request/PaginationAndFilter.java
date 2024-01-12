@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public class PaginationAndFilter {
 
     @Valid
-    @NotNull
+    @NotNull(message = "paginationRequest must not be null")
     private PaginationRequest paginationRequest;
 
     private final FilterState filterState;
