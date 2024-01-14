@@ -1,19 +1,17 @@
 package com.violet.hrapplication.approvals.repository;
 
-import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
 import com.violet.hrapplication.approvals.model.entity.LeaveRequestEntity;
 import com.violet.hrapplication.approvals.model.enums.State;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface LeaveRequestRepository {
 
-    List<LeaveRequestEntity> findAll(Integer page, Integer size, PaginationAndFilter.FilterState filter);
+    List<LeaveRequestEntity> findAll(Integer page, Integer size, Map<String, Object> filter);
 
     LeaveRequestEntity findById(String id);
-
-    List<LeaveRequestEntity> findByEmployeeId(String employeeId, Integer page, Integer size, PaginationAndFilter.FilterState filter);
 
     List<LeaveRequestEntity> findByState(State state, Integer page, Integer size);
 

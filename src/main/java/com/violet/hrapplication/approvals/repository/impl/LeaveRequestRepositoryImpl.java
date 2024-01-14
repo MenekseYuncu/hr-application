@@ -1,6 +1,5 @@
 package com.violet.hrapplication.approvals.repository.impl;
 
-import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
 import com.violet.hrapplication.approvals.model.entity.LeaveRequestEntity;
 import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.approvals.repository.LeaveRequestRepository;
@@ -14,6 +13,7 @@ import org.sql2o.Sql2o;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -26,20 +26,38 @@ class LeaveRequestRepositoryImpl implements LeaveRequestRepository {
     }
 
     @Override
-    public List<LeaveRequestEntity> findAll(Integer page, Integer size, PaginationAndFilter.FilterState filter) {
-        State state = null;
-        if (filter != null && filter.getState() != null) {
-            state = filter.getState();
+    public List<LeaveRequestEntity> findAll(Integer page, Integer size, Map<String, Object> filter) {
+        StringBuilder queryBuilder = new StringBuilder(LeaveRequestScripts.FIND_ALL);
+
+        if (!filter.isEmpty()) {
+            this.addFilterParameters(queryBuilder, filter);
         }
-        try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_ALL)) {
-            List<LeaveRequestEntity> result = query
+        queryBuilder.append(" ORDER BY ID LIMIT :limit OFFSET :offset");
+
+        try (Connection con = sql2o.open(); Query query = con.createQuery(queryBuilder.toString())) {
+            query
                     .addParameter("offset", (page - 1) * size)
-                    .addParameter("limit", size)
-                    .addParameter("state", state)
+                    .addParameter("limit", size);
+            if (!filter.isEmpty()) {
+                filter.forEach(query::addParameter);
+            }
+            List<LeaveRequestEntity> result = query
                     .setColumnMappings(LeaveRequestMapping.COLUMN_MAPPING)
                     .executeAndFetch(LeaveRequestEntity.class);
             return Objects.requireNonNullElse(result, Collections.emptyList());
         }
+    }
+
+    private void addFilterParameters(StringBuilder queryBuilder, Map<String, Object> filter) {
+        queryBuilder.append(" WHERE 1 = 1");
+        filter.forEach((key, value) -> {
+            LeaveRequestMapping mapping = LeaveRequestMapping.fromPropertyName(key);
+            queryBuilder
+                    .append(" AND ")
+                    .append(mapping.getPropertyName())
+                    .append(" = :")
+                    .append(mapping.getPropertyName());
+        });
     }
 
     @Override
@@ -49,23 +67,6 @@ class LeaveRequestRepositoryImpl implements LeaveRequestRepository {
                     .addParameter(LeaveRequestMapping.ID.getPropertyName(), id)
                     .setColumnMappings(LeaveRequestMapping.COLUMN_MAPPING)
                     .executeAndFetchFirst(LeaveRequestEntity.class);
-        }
-    }
-
-    @Override
-    public List<LeaveRequestEntity> findByEmployeeId(String employeeId, Integer page, Integer size, PaginationAndFilter.FilterState filter) {
-        State state = null;
-        if (filter != null && filter.getState() != null) {
-            state = filter.getState();
-        }
-        try (Connection con = sql2o.open(); Query query = con.createQuery(LeaveRequestScripts.FIND_BY_EMPLOYEE_ID)) {
-            return query
-                    .addParameter(LeaveRequestMapping.EMPLOYEE_ID.getPropertyName(), employeeId)
-                    .addParameter("offset", (page - 1) * size)
-                    .addParameter("limit", size)
-                    .addParameter("state", state)
-                    .setColumnMappings(LeaveRequestMapping.COLUMN_MAPPING)
-                    .executeAndFetch(LeaveRequestEntity.class);
         }
     }
 

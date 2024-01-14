@@ -32,6 +32,14 @@ public enum LeaveRequestMapping {
         return propertyName;
     }
 
+    public static LeaveRequestMapping fromPropertyName(String propertyName) {
+        return Arrays.stream(values())
+                .filter(leaveRequestMapping -> leaveRequestMapping.getPropertyName().equals(propertyName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No enum constant for property name " + propertyName));
+    }
+
     public static final Map<String, String> COLUMN_MAPPING = Arrays.stream(values())
             .collect(Collectors.toMap(LeaveRequestMapping::getColumnName, LeaveRequestMapping::getPropertyName));
 }

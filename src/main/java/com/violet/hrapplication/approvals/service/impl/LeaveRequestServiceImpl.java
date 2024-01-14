@@ -1,7 +1,6 @@
 package com.violet.hrapplication.approvals.service.impl;
 
 import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
-import com.violet.hrapplication.approvals.controller.request.PaginationRequest;
 import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.email.EmployeeEmailService;
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
@@ -43,7 +42,7 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
         List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAll(
                 paginationAndFilter.getPaginationRequest().page(),
                 paginationAndFilter.getPaginationRequest().size(),
-                paginationAndFilter.getFilterState()
+                paginationAndFilter.filterToMap()
         );
         return leaveRequestEntities.stream()
                 .map(leaveRequestEntity -> new LeaveRequestResponse(
@@ -56,37 +55,11 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public List<LeaveResponse> getLeaves(String employeeId, PaginationAndFilter paginationAndFilter) {
-        if (employeeRepository.findById(employeeId).isEmpty()) {
-            throw new UserNotFoundException("User not found");
-        }
-
-        List<LeaveRequestEntity> leaveEntities =
-                leaveRequestRepository.findByEmployeeId(
-                        employeeId,
-                        paginationAndFilter.getPaginationRequest().page(),
-                        paginationAndFilter.getPaginationRequest().size(),
-                        paginationAndFilter.getFilterState());
-
-        return leaveEntities.stream()
-                .map(leaveEntity -> new LeaveResponse(
-                        leaveEntity.getId(),
-                        leaveEntity.getEmployeeId(),
-                        leaveEntity.getStartDate(),
-                        leaveEntity.getEndDate(),
-                        leaveEntity.getState(),
-                        leaveEntity.getLeaveTypeId(),
-                        leaveEntity.getCreator(),
-                        leaveEntity.getCreationTime()))
-                .toList();
-    }
-
-    @Override
-    public List<LeaveRequestResponse> getLeavesByState(State state, PaginationRequest paginationRequest) {
+    public List<LeaveRequestResponse> getLeavesByState(State state, PaginationAndFilter paginationAndFilter) {
         List<LeaveRequestEntity> leaveEntities = leaveRequestRepository.findByState(
                 state,
-                paginationRequest.page(),
-                paginationRequest.size()
+                paginationAndFilter.getPaginationRequest().page(),
+                paginationAndFilter.getPaginationRequest().size()
         );
         return leaveEntities.stream()
                 .map(leaveEntity -> new LeaveRequestResponse(
