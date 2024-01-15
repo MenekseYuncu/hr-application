@@ -24,7 +24,7 @@ class AuthServiceImpl implements AuthService {
         Optional<EmployeeEntity> employeeEntity = employeeRepository.findByUsername(loginRequest.username());
 
         if (employeeEntity.isEmpty() || !BCrypt.checkpw(loginRequest.password(), employeeEntity.get().getPassword())) {
-            throw new AuthenticationException("Geçersiz kullanıcı adı veya şifre");
+            throw new AuthenticationException("Invalid username or password");
         }
     }
 }
