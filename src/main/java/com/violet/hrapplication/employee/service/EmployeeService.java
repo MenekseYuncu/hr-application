@@ -1,6 +1,5 @@
 package com.violet.hrapplication.employee.service;
 
-import com.violet.hrapplication.approvals.controller.request.PaginationRequest;
 import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
 import com.violet.hrapplication.employee.controller.request.UpdateEmployeeRequest;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    List<EmployeeResponse> findAll(PaginationRequest paginationRequest);
+    List<EmployeeResponse> findAll();
 
     void create(CreateEmployeeRequest request);
 

@@ -15,7 +15,6 @@ class AuthServiceImpl implements AuthService {
     private final EmployeeRepository employeeRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     AuthServiceImpl(EmployeeRepository employeeRepository, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
         this.passwordEncoder = passwordEncoder;

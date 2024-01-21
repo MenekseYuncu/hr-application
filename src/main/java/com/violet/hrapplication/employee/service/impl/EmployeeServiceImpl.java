@@ -1,6 +1,5 @@
 package com.violet.hrapplication.employee.service.impl;
 
-import com.violet.hrapplication.approvals.controller.request.PaginationRequest;
 import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
 import com.violet.hrapplication.employee.controller.request.UpdateEmployeeRequest;
@@ -37,7 +36,7 @@ class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public List<EmployeeResponse> findAll(PaginationRequest paginationRequest) {
+    public List<EmployeeResponse> findAll() {
         List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
         return employeeEntities.stream()
                 .map(employeeEntity -> new EmployeeResponse(

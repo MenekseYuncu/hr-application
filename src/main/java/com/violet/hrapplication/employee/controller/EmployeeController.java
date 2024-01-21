@@ -1,6 +1,5 @@
 package com.violet.hrapplication.employee.controller;
 
-import com.violet.hrapplication.approvals.controller.request.PaginationRequest;
 import com.violet.hrapplication.employee.controller.request.ChangePasswordRequest;
 import com.violet.hrapplication.employee.controller.request.CreateEmployeeRequest;
 import com.violet.hrapplication.employee.controller.request.UpdateEmployeeRequest;
@@ -26,12 +25,8 @@ class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeResponse> findAll(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size
-    ) {
-        PaginationRequest paginationRequest = new PaginationRequest(page, size);
-        return employeeService.findAll(paginationRequest);
+    public List<EmployeeResponse> findAll() {
+        return employeeService.findAll();
     }
 
     @PostMapping
