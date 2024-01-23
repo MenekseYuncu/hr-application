@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.UUID;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PaginationAndFilter {
+public class LeaveRequestPaginationAndFilter {
 
     @Valid
     @NotNull
@@ -45,7 +45,7 @@ public class PaginationAndFilter {
         return filterMap;
     }
 
-    public PaginationAndFilter(PaginationRequest pagination, Filter filter) {
+    public LeaveRequestPaginationAndFilter(PaginationRequest pagination, Filter filter) {
         this.pagination = pagination;
         this.filter = filter;
     }

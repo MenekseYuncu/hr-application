@@ -1,6 +1,6 @@
 package com.violet.hrapplication.approvals.service.impl;
 
-import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
+import com.violet.hrapplication.approvals.controller.request.LeaveRequestPaginationAndFilter;
 import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.email.EmployeeEmailService;
 import com.violet.hrapplication.employee.model.entity.EmployeeEntity;
@@ -37,12 +37,12 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public List<LeaveRequestResponse> getAllLeaves(PaginationAndFilter paginationAndFilter) {
+    public List<LeaveRequestResponse> getAllLeaves(LeaveRequestPaginationAndFilter leaveRequestPaginationAndFilter) {
 
         List<LeaveRequestEntity> leaveRequestEntities = leaveRequestRepository.findAll(
-                paginationAndFilter.getPaginationRequest().page(),
-                paginationAndFilter.getPaginationRequest().size(),
-                paginationAndFilter.filterToMap()
+                leaveRequestPaginationAndFilter.getPaginationRequest().page(),
+                leaveRequestPaginationAndFilter.getPaginationRequest().size(),
+                leaveRequestPaginationAndFilter.filterToMap()
         );
         return leaveRequestEntities.stream()
                 .map(leaveRequestEntity -> new LeaveRequestResponse(
@@ -55,11 +55,11 @@ class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public List<LeaveRequestResponse> getLeavesByState(State state, PaginationAndFilter paginationAndFilter) {
+    public List<LeaveRequestResponse> getLeavesByState(State state, LeaveRequestPaginationAndFilter leaveRequestPaginationAndFilter) {
         List<LeaveRequestEntity> leaveEntities = leaveRequestRepository.findByState(
                 state,
-                paginationAndFilter.getPaginationRequest().page(),
-                paginationAndFilter.getPaginationRequest().size()
+                leaveRequestPaginationAndFilter.getPaginationRequest().page(),
+                leaveRequestPaginationAndFilter.getPaginationRequest().size()
         );
         return leaveEntities.stream()
                 .map(leaveEntity -> new LeaveRequestResponse(

@@ -3,7 +3,7 @@ package com.violet.hrapplication.approvals.controller;
 import com.violet.hrapplication.approvals.controller.reponse.LeaveRequestResponse;
 import com.violet.hrapplication.approvals.controller.reponse.LeaveResponse;
 import com.violet.hrapplication.approvals.controller.request.CreateLeaveRequest;
-import com.violet.hrapplication.approvals.controller.request.PaginationAndFilter;
+import com.violet.hrapplication.approvals.controller.request.LeaveRequestPaginationAndFilter;
 import com.violet.hrapplication.approvals.controller.request.UpdateLeaveRequest;
 import com.violet.hrapplication.approvals.model.enums.State;
 import com.violet.hrapplication.approvals.service.LeaveRequestService;
@@ -33,28 +33,28 @@ class LeaveRequestController {
 
     @PostMapping
     public List<LeaveRequestResponse> getAllLeaves(
-            @Valid @RequestBody PaginationAndFilter paginationAndFilter
+            @Valid @RequestBody LeaveRequestPaginationAndFilter leaveRequestPaginationAndFilter
     ) {
-        return leaveRequestService.getAllLeaves(paginationAndFilter);
+        return leaveRequestService.getAllLeaves(leaveRequestPaginationAndFilter);
     }
 
     @PostMapping("/pending")
     public ResponseEntity<List<LeaveRequestResponse>> getPendingLeaves(
-            @Valid @RequestBody PaginationAndFilter paginationRequest
+            @Valid @RequestBody LeaveRequestPaginationAndFilter paginationRequest
     ) {
         return ResponseEntity.ok(leaveRequestService.getLeavesByState(State.PENDING, paginationRequest));
     }
 
     @PostMapping("/approved")
     public ResponseEntity<List<LeaveRequestResponse>> getApprovedLeaves(
-            @Valid @RequestBody PaginationAndFilter paginationRequest
+            @Valid @RequestBody LeaveRequestPaginationAndFilter paginationRequest
     ) {
         return ResponseEntity.ok(leaveRequestService.getLeavesByState(State.APPROVED, paginationRequest));
     }
 
     @PostMapping("/rejected")
     public ResponseEntity<List<LeaveRequestResponse>> getRejectedLeaves(
-            @Valid @RequestBody PaginationAndFilter paginationRequest
+            @Valid @RequestBody LeaveRequestPaginationAndFilter paginationRequest
     ) {
         return ResponseEntity.ok(leaveRequestService.getLeavesByState(State.REJECTED, paginationRequest));
     }
