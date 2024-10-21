@@ -1,6 +1,6 @@
 # Human Resources Application
 
-This is a Human Resources (HR) application developed using Spring Boot.
+This project is an application developed to effectively manage human resources processes. With its user-friendly interface, it aims to facilitate the management of essential functions such as employee records, leave requests, and performance evaluations, along with reporting and analytics features. By automating these processes, the application seeks to save time and resources while enhancing overall work efficiency.
 
 ## Features
 
